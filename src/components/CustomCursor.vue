@@ -62,6 +62,8 @@ const handleMouseUp = () => {
 };
 
 // 平滑更新轨迹位置
+let rafId = null;
+
 const updateTrailPosition = () => {
   if (showCursor.value) {
     const dx = cursorX.value - trailX.value;
@@ -71,7 +73,7 @@ const updateTrailPosition = () => {
     trailY.value += dy * 0.2;
   }
   
-  requestAnimationFrame(updateTrailPosition);
+  rafId = requestAnimationFrame(updateTrailPosition);
 };
 
 // 为可交互元素添加事件监听
@@ -92,6 +94,9 @@ const setupInteractiveListeners = () => {
   };
 };
 
+// 清理函数引用
+let cleanupInteractiveListeners = null;
+
 // 生命周期钩子
 onMounted(() => {
   checkMobile();
@@ -103,19 +108,23 @@ onMounted(() => {
   document.addEventListener('mouseup', handleMouseUp);
   
   // 设置可交互元素的监听器
-  const cleanupInteractiveListeners = setupInteractiveListeners();
+  cleanupInteractiveListeners = setupInteractiveListeners();
   
   // 开始动画循环
   updateTrailPosition();
-  
-  // 组件卸载时清理
-  onUnmounted(() => {
-    window.removeEventListener('resize', checkMobile);
-    document.removeEventListener('mousemove', handleMouseMove);
-    document.removeEventListener('mousedown', handleMouseDown);
-    document.removeEventListener('mouseup', handleMouseUp);
+});
+
+onUnmounted(() => {
+  if (rafId) {
+    cancelAnimationFrame(rafId);
+  }
+  window.removeEventListener('resize', checkMobile);
+  document.removeEventListener('mousemove', handleMouseMove);
+  document.removeEventListener('mousedown', handleMouseDown);
+  document.removeEventListener('mouseup', handleMouseUp);
+  if (cleanupInteractiveListeners) {
     cleanupInteractiveListeners();
-  });
+  }
 });
 </script>
 
@@ -131,6 +140,7 @@ onMounted(() => {
   mix-blend-mode: difference;
   transition: transform 0.2s ease, background-color 0.2s ease;
   transform: translate(-50%, -50%);
+  will-change: left, top, transform;
 }
 
 .cursor-trail {
@@ -144,6 +154,7 @@ onMounted(() => {
   mix-blend-mode: difference;
   transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
   transform: translate(-50%, -50%);
+  will-change: left, top, transform;
 }
 
 /* 悬停状态 */

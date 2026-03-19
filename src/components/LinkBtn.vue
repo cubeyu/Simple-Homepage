@@ -13,10 +13,22 @@
 import { Icon } from "@iconify/vue";
 
 const props = defineProps({
-  icon: String,
-  text: String,
-  color: String,
-  url: String,
+  icon: {
+    type: String,
+    required: true
+  },
+  text: {
+    type: String,
+    required: true
+  },
+  color: {
+    type: String,
+    default: '#3b82f6'
+  },
+  url: {
+    type: String,
+    default: '#'
+  }
 });
 </script>
 <style>

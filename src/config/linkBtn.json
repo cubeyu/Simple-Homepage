@@ -1,10 +1,10 @@
 {
   "linkBtn": [
     {
-      "icon": "fa7-solid:blog",
-      "text": "博客",
+      "icon": "fa7-solid:robot",
+      "text": "AI代理",
       "color": "#ffb3b3",
-      "url": "https://cubeyu.cnblogs.com/"
+      "url": "https://clawbase.cc"
     },
     {
       "icon": "mdi:github",
@@ -20,20 +20,13 @@
     },
     {
       "icon": "line-md:email",
-      "text": "邮箱",
+      "text": "合作邮箱",
       "color": "#FDB34F",
       "url": "mailto:cubeyu@aliyun.com"
     },
     {
-      "icon": "tabler:brand-wechat",
-      "text": "公众号",
-      "color": "#DC1555",
-      "url": "https://mp.weixin.qq.com/s/Wm0BFsdFGwRamEJZEUJ18g"
-    }
-    ,
-    {
       "icon": "tabler:trending-up",
-      "text": "今日热搜",
+      "text": "今日热榜",
       "color": "#0099FF",
       "url": "https://hot.techisle.top/"
     }
@@ -50,7 +43,6 @@
       "text": "站点监控",
       "color": "#00CC00",
       "url": "https://check.techisle.top/"
-      
     }
   ]
 }

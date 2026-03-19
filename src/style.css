@@ -1,6 +1,6 @@
 /* 全局字体设置 */
 * {
-  font-family: 'AlimamaFangYuanTiVF-Thin', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: 'DingTalkJinBuTi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
 /* 只为特定元素设置过渡效果，避免全局性能问题 */
@@ -10,7 +10,6 @@ body,
 .card,
 .techItem,
 .todoItem,
-.cursor-effect,
 .custom-cursor,
 .cursor-trail {
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
@@ -58,4 +57,16 @@ body,
   /* 阴影效果 */
   --shadow-light: rgba(255, 255, 255, 0.05);
   --shadow-dark: rgba(0, 0, 0, 0.3);
+}
+
+/* 无障碍：尊重用户的动画偏好设置 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

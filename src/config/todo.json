@@ -1,15 +1,15 @@
 {
   "todoList": [
     {
-      "text": "训练AI大模型",
+      "text": "ClawBase",
       "checked": false
     },
     {
-      "text": "学会粤语",
-      "checked": false
+      "text": "Vibe Coding",
+      "checked": true
     },
     {
-      "text": "开发企业知识库",
+      "text": "掌握更多技能",
       "checked": false
     },
     {

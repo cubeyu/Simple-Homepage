@@ -1,8 +1,13 @@
 <template>
   <div class="mainCard animate-float">
     <div class="header">
-      <div class="avatar" :emjoi="config.emjoi" @mouseenter="avatarHovered = true" @mouseleave="avatarHovered = false">
-        <img :src="config.avatarUrl" alt="" :class="{ 'avatar-zoom': avatarHovered }" />
+      <div class="avatar" :emoji="config.emjoi" @mouseenter="avatarHovered = true" @mouseleave="avatarHovered = false">
+        <img 
+          :src="avatarSrc" 
+          alt="头像" 
+          :class="{ 'avatar-zoom': avatarHovered }" 
+          @error="handleAvatarError"
+        />
       </div>
       
       <!-- 主题切换按钮 - 滑块式设计 -->
@@ -204,7 +209,7 @@
 
     <div class="footer">
       <p>
-        ©2025 麦希屿
+        ©2026 cubeyu
       </p>
     </div>
   </div>
@@ -218,19 +223,24 @@ import todo from "../config/todo.json";
 import typewriter from "../config/typewriter.json";
 import { Icon } from "@iconify/vue";
 import LinkBtn from "../components/LinkBtn.vue";
-import { onMounted, ref, computed, nextTick } from "vue";
+import { onMounted, onUnmounted, ref, computed, inject } from "vue";
 import Typewriter from "../components/Typewriter.vue";
 
 const now = ref(new Date());
 
-// 主题状态
-const theme = ref(localStorage.getItem('theme') || 'light');
+// 从父组件注入主题
+const theme = inject('theme');
+const changeTheme = inject('changeTheme');
 
 // 交互状态
 const avatarHovered = ref(false);
-const hoveredTech = ref(-1);
-const hoveredLink = ref(-1);
-const skillProgress = ref([]);
+
+// 头像加载兜底
+const avatarSrc = ref(config.avatarUrl);
+const handleAvatarError = () => {
+  // CDN 不可用时使用本地 favicon 作为备用
+  avatarSrc.value = '/favicon.ico';
+};
 
 // 进度数据（添加动画效果）
 const hoursPassed = computed(() => now.value.getHours());
@@ -269,80 +279,23 @@ const yearProgress = computed(
   () => (daysInYearPassed.value / daysInCurrentYear.value) * 100
 );
 
-// 数字增长动画
-const animateNumber = (start, end, duration, callback) => {
-  const startTime = performance.now();
-  const range = end - start;
-  
-  const updateNumber = (currentTime) => {
-    const elapsed = currentTime - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    // 使用缓动函数
-    const easeOutQuad = progress * (2 - progress);
-    const current = Math.floor(start + range * easeOutQuad);
-    
-    callback(current);
-    
-    if (progress < 1) {
-      requestAnimationFrame(updateNumber);
-    }
-  };
-  
-  requestAnimationFrame(updateNumber);
-};
-
 function isLeapYear(year) {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 }
 
-// 初始化主题
-const initTheme = () => {
-  if (theme.value === 'dark') {
-    document.documentElement.classList.add('dark-theme');
-    document.body.setAttribute('theme', 'dark');
-  }
-};
-
-// 切换主题
-const changeTheme = () => {
-  theme.value = theme.value === 'light' ? 'dark' : 'light';
-  localStorage.setItem('theme', theme.value);
-  
-  if (theme.value === 'dark') {
-    document.documentElement.classList.add('dark-theme');
-    document.body.setAttribute('theme', 'dark');
-  } else {
-    document.documentElement.classList.remove('dark-theme');
-    document.body.setAttribute('theme', 'light');
-  }
-};
-
-// 初始化动画
-const initAnimations = () => {
-  // 为技术栈项初始化进度值
-  skillProgress.value = techStack.techStack.map(() => 0);
-  
-  nextTick(() => {
-    // 为每个技术栈项设置随机进度并执行动画
-    techStack.techStack.forEach((tech, index) => {
-      const targetProgress = 60 + Math.floor(Math.random() * 40); // 60-100之间的随机值
-      animateNumber(0, targetProgress, 2000, (value) => {
-        skillProgress.value[index] = value;
-      });
-    });
-  });
-};
+// 存储定时器ID用于清理
+let timeIntervalId = null;
 
 onMounted(() => {
-  // 初始化主题
-  initTheme();
-  
-  setInterval(() => {
+  timeIntervalId = setInterval(() => {
     now.value = new Date();
   }, 1000);
-  
-  // 初始化动画
-  initAnimations();
+});
+
+onUnmounted(() => {
+  if (timeIntervalId) {
+    clearInterval(timeIntervalId);
+  }
 });
 </script>
 
@@ -621,6 +574,7 @@ onMounted(() => {
 
 .animate-float {
   animation: float 6s ease-in-out infinite;
+  will-change: transform;
 }
 
 @keyframes float {
@@ -717,35 +671,6 @@ onMounted(() => {
 
 .techItem:hover .iconify {
   transform: scale(1.2) rotate(5deg);
-}
-
-/* 技能进度条 */
-.skill-progress {
-  height: 8px;
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  margin-top: 8px;
-  overflow: hidden;
-  position: relative;
-}
-
-.skill-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #3498db, #60a5fa);
-  border-radius: 4px;
-  transition: width 1.5s ease-out;
-  position: relative;
-}
-
-.skill-progress-fill::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  animation: shimmer 2s infinite;
 }
 
 /* 响应式优化 */

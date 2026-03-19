@@ -13,6 +13,8 @@
     padding: 2.5rem;
     position: relative;
     transition: all 0.4s ease;
+    will-change: transform;
+    transform: translateZ(0);
     
     /* 优化PC端显示效果 */
     @media (min-width: 1200px) {
@@ -41,6 +43,7 @@
                         box-shadow: 
                             0 4px 20px var(--shadow-dark),
                             inset 0 1px 0 var(--shadow-light);
+                        will-change: transform;
 
             & img {
                 border-radius: 50%;
@@ -175,6 +178,7 @@
                     margin: .8rem 0;
                     padding-bottom: .2rem;
                     border-bottom: 2px var(--text-color) dashed;
+                    will-change: transform;
 
                     & span {
                         margin-left: .5rem;
@@ -229,6 +233,7 @@
                     box-shadow: 
                         0 4px 12px var(--shadow-dark),
                         inset 0 1px 0 var(--shadow-light);
+                    will-change: transform;
 
                     &::before {
                         content: attr(data-name);
@@ -294,6 +299,7 @@
 
     & .hover {
         transition: all .3s ease-in-out;
+        will-change: transform, box-shadow;
 
         &:hover {
             transform: translateY(-5px);

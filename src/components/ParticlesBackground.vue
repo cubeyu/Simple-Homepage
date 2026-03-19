@@ -15,16 +15,15 @@ const getThemeColor = () => {
 const initParticles = () => {
   const canvas = document.createElement('canvas');
   const container = document.getElementById('particles-js');
-  if (!container) return;
+  if (!container) return null;
   
   // 清空容器
   container.innerHTML = '';
   container.appendChild(canvas);
   
   const ctx = canvas.getContext('2d');
-  // 声明为全局变量以便在外部访问
-  window.__particles = [];
-  let particles = window.__particles;
+  // 使用局部变量而非全局变量
+  let particles = [];
   let animationId = null;
   
   // 设置canvas尺寸
@@ -115,22 +114,36 @@ const initParticles = () => {
   createParticles();
   animate();
   
+  // 更新粒子颜色（主题切换时调用）
+  const updateParticleColors = (newColor) => {
+    particles.forEach(particle => {
+      particle.color = newColor;
+    });
+  };
+  
   // 清理函数
-  return () => {
+  const cleanup = () => {
     if (animationId) {
       cancelAnimationFrame(animationId);
     }
     window.removeEventListener('resize', resizeCanvas);
   };
+  
+  return { cleanup, updateParticleColors };
 };
 
 let cleanup = null;
+let updateParticleColors = null;
 
 // 主题变化观察器
 let themeObserver = null;
 
 onMounted(() => {
-  cleanup = initParticles();
+  const result = initParticles();
+  if (result) {
+    cleanup = result.cleanup;
+    updateParticleColors = result.updateParticleColors;
+  }
   
   // 监听主题变化
   themeObserver = new MutationObserver(mutations => {
@@ -138,10 +151,8 @@ onMounted(() => {
       if (mutation.attributeName === 'theme') {
         // 只更新粒子颜色，不重新初始化整个系统
         const newColor = getThemeColor();
-        if (window.__particles) {
-          window.__particles.forEach(particle => {
-            particle.color = newColor;
-          });
+        if (updateParticleColors) {
+          updateParticleColors(newColor);
         }
       }
     });
