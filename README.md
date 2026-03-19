@@ -17,6 +17,7 @@
 - [Vue 3](https://v3.vuejs.org/) - 渐进式 JavaScript 框架
 - [Vite](https://vitejs.dev/) - 新一代前端构建工具
 - [Iconify](https://iconify.design/) - 统一图标框架
+- Canvas API - 粒子背景动画
 
 ## 项目结构
 

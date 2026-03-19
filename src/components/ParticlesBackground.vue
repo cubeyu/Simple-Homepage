@@ -126,11 +126,14 @@ const initParticles = () => {
 
 let cleanup = null;
 
+// 主题变化观察器
+let themeObserver = null;
+
 onMounted(() => {
   cleanup = initParticles();
   
   // 监听主题变化
-  const observer = new MutationObserver(mutations => {
+  themeObserver = new MutationObserver(mutations => {
     mutations.forEach(mutation => {
       if (mutation.attributeName === 'theme') {
         // 只更新粒子颜色，不重新初始化整个系统
@@ -143,15 +146,16 @@ onMounted(() => {
       }
     });
   });
-  observer.observe(document.body, { attributes: true });
-  
-  // 保存observer以便在unmounted时清理
-  onUnmounted(() => {
-    observer.disconnect();
-    if (cleanup) {
-      cleanup();
-    }
-  });
+  themeObserver.observe(document.body, { attributes: true });
+});
+
+onUnmounted(() => {
+  if (themeObserver) {
+    themeObserver.disconnect();
+  }
+  if (cleanup) {
+    cleanup();
+  }
 });
 </script>
 

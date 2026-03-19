@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@iconify/vue": "^5.0.0",
-    "particles.js": "^2.0.0",
     "vue": "^3.5.18"
   },
   "devDependencies": {
