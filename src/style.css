@@ -16,47 +16,55 @@ body,
 }
 
 :root {
-  /* 背景颜色 - 统一为与小方块一致的基础颜色 */
-  --background: #d0e8ff;
-  /* 主题颜色 */
-  --theme-color: #ffb3b3;
+  /* 背景渐变 - 柔和的天空渐变 */
+  --background: linear-gradient(135deg, #e0f7fa 0%, #e8eaf6 50%, #fce4ec 100%);
+  --background-solid: #e8eaf6;
+  /* 主题渐变色 */
+  --theme-color: #ff6b9d;
+  --theme-gradient: linear-gradient(135deg, #ff6b9d 0%, #c44ce2 50%, #7c4dff 100%);
+  --theme-glow: rgba(255, 107, 157, 0.4);
   /* 文字颜色 */
-  --text-color: #000;
-  /* 卡片背景颜色 - 亚克力效果 */
-  --card-background: rgba(255, 255, 255, 0.7);
-  /* 卡片边框颜色 - 细微高光 */
-  --card-border-color: rgba(255, 255, 255, 0.8);
-  /* 小方块背景颜色 - 亚克力效果 */
-  --square-background: rgba(255, 255, 255, 0.6);
-  /* 小方块边框颜色 - 细微高光 */
-  --square-border-color: rgba(255, 255, 255, 0.9);
+  --text-color: #1a1a2e;
+  --text-secondary: #4a4a6a;
+  /* 卡片背景 - 增强玻璃拟态 */
+  --card-background: rgba(255, 255, 255, 0.75);
+  --card-border-color: rgba(255, 255, 255, 0.9);
+  --card-glow: rgba(255, 107, 157, 0.15);
+  /* 小方块背景 */
+  --square-background: rgba(255, 255, 255, 0.65);
+  --square-border-color: rgba(255, 255, 255, 0.95);
   /* 提示文字颜色 */
   --tip-color: #fff;
   /* 加载动画背景颜色 */
   --loading-background: var(--theme-color);
   /* 模糊效果强度 */
-  --blur-strength: 12px;
-  /* 阴影效果 */
-  --shadow-light: rgba(255, 255, 255, 0.2);
-  --shadow-dark: rgba(0, 0, 0, 0.1);
+  --blur-strength: 20px;
+  /* 阴影效果 - 增强层次感 */
+  --shadow-light: rgba(255, 255, 255, 0.25);
+  --shadow-dark: rgba(26, 26, 46, 0.12);
+  --shadow-glow: rgba(255, 107, 157, 0.25);
 }
 
 [theme='dark'] {
-  /* 背景颜色 - 统一为深色 */
-  --background: #222222;
+  /* 背景渐变 - 深邃星空 */
+  --background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  --background-solid: #1a1a2e;
   /* 文字颜色 */
-  --text-color: #fff;
-  /* 卡片背景颜色 - 亚克力效果 */
-  --card-background: rgba(45, 45, 45, 0.7);
-  /* 小方块背景颜色 - 亚克力效果 */
-  --square-background: rgba(68, 68, 68, 0.6);
-  /* 小方块边框颜色 - 细微高光 */
-  --square-border-color: rgba(95, 95, 95, 0.9);
+  --text-color: #f0f0f5;
+  --text-secondary: #b0b0c0;
+  /* 卡片背景 - 深色玻璃拟态 */
+  --card-background: rgba(30, 30, 50, 0.8);
+  --card-border-color: rgba(100, 100, 150, 0.3);
+  --card-glow: rgba(124, 77, 255, 0.2);
+  /* 小方块背景 */
+  --square-background: rgba(50, 50, 80, 0.6);
+  --square-border-color: rgba(100, 100, 150, 0.4);
   /* 加载动画背景颜色 */
-  --loading-background: #2b2b2b;
+  --loading-background: #302b63;
   /* 阴影效果 */
-  --shadow-light: rgba(255, 255, 255, 0.05);
-  --shadow-dark: rgba(0, 0, 0, 0.3);
+  --shadow-light: rgba(255, 255, 255, 0.08);
+  --shadow-dark: rgba(0, 0, 0, 0.4);
+  --shadow-glow: rgba(124, 77, 255, 0.3);
 }
 
 /* 无障碍：尊重用户的动画偏好设置 */

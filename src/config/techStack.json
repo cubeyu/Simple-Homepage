@@ -33,7 +33,27 @@
       "name": "Vue"
     },
     {
-      "icon": "skill-icons:jquery",
+      "icon": "material-icon-theme:nodejs",
+      "name": "Node.js"
+    },
+    {
+      "icon": "logos:nextjs",
+      "name": "Next.js"
+    },
+    {
+      "icon": "logos:vitejs",
+      "name": "Vite"
+    },
+    {
+      "icon": "material-icon-theme:tailwindcss",
+      "name": "Tailwind CSS"
+    },
+    {
+      "icon": "logos:java",
+      "name": "Java"
+    },
+    {
+      "icon": "logos:jquery",
       "name": "Jquery"
     }
   ]
