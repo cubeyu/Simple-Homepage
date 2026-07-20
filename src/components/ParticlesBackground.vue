@@ -1,8 +1,7 @@
 <template>
   <div class="ink-background" aria-hidden="true">
-    <!-- 远山 - 极淡，意境为主 -->
-    <div class="mountains mountains-far"></div>
-    <div class="mountains mountains-mid"></div>
+    <!-- 水墨画背景图 -->
+    <div class="ink-painting-bg"></div>
 
     <!-- 云雾 - 飘渺流动 -->
     <div class="clouds clouds-1"></div>
@@ -42,12 +41,6 @@
       </svg>
     </div>
 
-    <!-- 左侧淡墨竹影 -->
-    <div class="bamboo bamboo-left"></div>
-
-    <!-- 右侧淡墨兰草 -->
-    <div class="bamboo bamboo-right"></div>
-
     <!-- 暗色模式：星月 -->
     <div class="night-stars" v-if="theme === 'dark'">
       <div class="star star-1"></div>
@@ -60,13 +53,61 @@
 
     <!-- 一枚闲章 - 左下角 -->
     <div class="seal-corner seal-bottom-left">墨</div>
+
+    <!-- 鼠标墨水涟漪层 -->
+    <div class="ink-ripple-layer" ref="rippleLayer"></div>
   </div>
 </template>
 
 <script setup>
-import { inject } from 'vue'
+import { inject, ref, onMounted, onUnmounted } from 'vue'
 
 const theme = inject('theme')
+const rippleLayer = ref(null)
+
+let lastX = 0
+let lastY = 0
+let lastTime = 0
+
+function createRipple(x, y) {
+  if (!rippleLayer.value) return
+  const el = document.createElement('div')
+  el.className = 'ink-ripple'
+  el.style.left = x + 'px'
+  el.style.top = y + 'px'
+  // 随机大小变化，让涟漪更自然
+  const scale = 0.8 + Math.random() * 0.6
+  el.style.setProperty('--ripple-scale', scale)
+  rippleLayer.value.appendChild(el)
+  setTimeout(() => {
+    el.remove()
+  }, 1400)
+}
+
+function onMouseMove(e) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+  const now = Date.now()
+  const dx = e.clientX - lastX
+  const dy = e.clientY - lastY
+  const dist = Math.sqrt(dx * dx + dy * dy)
+
+  // 节流：每移动 60px 或 120ms 生成一个涟漪
+  if (dist > 60 || now - lastTime > 120) {
+    createRipple(e.clientX, e.clientY)
+    lastX = e.clientX
+    lastY = e.clientY
+    lastTime = now
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('mousemove', onMouseMove, { passive: true })
+})
+
+onUnmounted(() => {
+  window.removeEventListener('mousemove', onMouseMove)
+})
 </script>
 
 <style scoped>
@@ -81,38 +122,21 @@ const theme = inject('theme')
   overflow: hidden;
 }
 
-/* 远山 - 远山淡影，追求意境 */
-.mountains {
+/* 水墨画背景图 */
+.ink-painting-bg {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-repeat: repeat-x;
-  background-size: 60% 100%;
+  inset: 0;
+  background-image: url('/bg-inkwash.png');
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  opacity: 0.9;
 }
 
-.mountains-far {
-  height: 35%;
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 200' preserveAspectRatio='none'%3E%3Cpath d='M0,200 L0,130 Q80,90 150,110 Q220,60 300,100 Q380,50 450,90 Q480,80 500,100 L500,200 Z' fill='%232a2a2a'/%3E%3C/svg%3E");
-  animation: mountainDrift 80s ease-in-out infinite;
-}
-
-.mountains-mid {
-  height: 25%;
-  opacity: 0.03;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 200' preserveAspectRatio='none'%3E%3Cpath d='M0,200 L0,150 Q100,110 180,130 Q260,80 340,120 Q400,90 500,140 L500,200 Z' fill='%231a1a1a'/%3E%3C/svg%3E");
-  animation: mountainDrift 60s ease-in-out infinite reverse;
-}
-
-@keyframes mountainDrift {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(-3%);
-  }
+/* 暗色模式：压暗并加一层夜色调 */
+:global([theme='dark']) .ink-painting-bg {
+  opacity: 0.55;
+  filter: brightness(0.6) saturate(0.8);
 }
 
 /* 云雾 - 飘渺流动，极淡 */
@@ -278,31 +302,6 @@ const theme = inject('theme')
   }
 }
 
-/* 左侧竹影 - 极简几笔，意境为主 */
-.bamboo {
-  position: absolute;
-  top: 0;
-  width: 120px;
-  height: 100%;
-  opacity: 0.03;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-
-.bamboo-left {
-  left: -10px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 600' preserveAspectRatio='xMidYMax meet'%3E%3Cg stroke='%231a1a1a' stroke-width='2' fill='none' stroke-linecap='round'%3E%3Cpath d='M20,600 L20,50 Q30,40 25,30 L25,10'/%3E%3Cpath d='M50,600 L50,100 Q60,90 55,80 L55,60'/%3E%3Cpath d='M15,400 Q5,390 0,400' stroke-width='1.5'/%3E%3Cpath d='M25,300 Q15,290 10,300' stroke-width='1.5'/%3E%3Cpath d='M20,200 Q10,190 5,200' stroke-width='1.5'/%3E%3Cpath d='M45,350 Q55,340 60,350' stroke-width='1.5'/%3E%3Cpath d='M50,250 Q60,240 65,250' stroke-width='1.5'/%3E%3C/g%3E%3C/svg%3E");
-  background-position: bottom left;
-}
-
-.bamboo-right {
-  right: -20px;
-  transform: scaleX(-1);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 500' preserveAspectRatio='xMidYMax meet'%3E%3Cg stroke='%231a1a1a' stroke-width='1.5' fill='none' stroke-linecap='round'%3E%3Cpath d='M30,500 L30,80 Q40,70 35,60'/%3E%3Cpath d='M55,500 L55,150 Q65,140 60,130'/%3E%3Cpath d='M25,350 Q15,340 10,350'/%3E%3Cpath d='M30,250 Q20,240 15,250'/%3E%3Cpath d='M50,400 Q60,390 65,400'/%3E%3Cpath d='M55,300 Q65,290 70,300'/%3E%3C/g%3E%3C/svg%3E");
-  background-position: bottom right;
-  opacity: 0.025;
-}
-
 /* 闲章 - 左下角 */
 .seal-corner {
   position: absolute;
@@ -323,31 +322,7 @@ const theme = inject('theme')
   letter-spacing: 0;
 }
 
-/* 深色主题适配 */
-:global([theme='dark']) .mountains-far {
-  opacity: 0.06;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 200' preserveAspectRatio='none'%3E%3Cpath d='M0,200 L0,130 Q80,90 150,110 Q220,60 300,100 Q380,50 450,90 Q480,80 500,100 L500,200 Z' fill='%23c0b8a8'/%3E%3C/svg%3E");
-}
-
-:global([theme='dark']) .mountains-mid {
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 200' preserveAspectRatio='none'%3E%3Cpath d='M0,200 L0,150 Q100,110 180,130 Q260,80 340,120 Q400,90 500,140 L500,200 Z' fill='%23d4cfc4'/%3E%3C/svg%3E");
-}
-
-:global([theme='dark']) .bamboo {
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 600' preserveAspectRatio='xMidYMax meet'%3E%3Cg stroke='%23c0b8a8' stroke-width='2' fill='none' stroke-linecap='round'%3E%3Cpath d='M20,600 L20,50 Q30,40 25,30 L25,10'/%3E%3Cpath d='M50,600 L50,100 Q60,90 55,80 L55,60'/%3E%3Cpath d='M15,400 Q5,390 0,400' stroke-width='1.5'/%3E%3Cpath d='M25,300 Q15,290 10,300' stroke-width='1.5'/%3E%3Cpath d='M20,200 Q10,190 5,200' stroke-width='1.5'/%3E%3Cpath d='M45,350 Q55,340 60,350' stroke-width='1.5'/%3E%3Cpath d='M50,250 Q60,240 65,250' stroke-width='1.5'/%3E%3C/g%3E%3C/svg%3E");
-}
-
-:global([theme='dark']) .bamboo-right {
-  opacity: 0.035;
-}
-
-:global([theme='dark']) .seal-corner {
-  opacity: 0.2;
-}
-
-/* 暗色模式：云雾 */
+/* 暗色模式适配 */
 :global([theme='dark']) .clouds {
   background: radial-gradient(ellipse at center, #a8a49c 0%, transparent 70%);
   opacity: 0.04;
@@ -357,7 +332,6 @@ const theme = inject('theme')
   opacity: 0.025;
 }
 
-/* 暗色模式：飞鸟 */
 :global([theme='dark']) .bird::before,
 :global([theme='dark']) .bird::after {
   background: #c0b8a8;
@@ -367,18 +341,16 @@ const theme = inject('theme')
   opacity: 0.1;
 }
 
-/* 暗色模式：扁舟 */
 :global([theme='dark']) .boat {
   opacity: 0.5;
 }
 
-/* 移动端简化背景 */
-@media (max-width: 768px) {
-  .bamboo {
-    opacity: 0.02;
-    width: 80px;
-  }
+:global([theme='dark']) .seal-corner {
+  opacity: 0.2;
+}
 
+/* 移动端简化 */
+@media (max-width: 768px) {
   .seal-corner {
     width: 28px;
     height: 28px;
@@ -386,19 +358,15 @@ const theme = inject('theme')
     bottom: 20px;
     left: 20px;
   }
+
+  .ink-painting-bg {
+    background-position: 60% bottom;
+  }
 }
 
 @media (max-width: 480px) {
-  .bamboo {
-    display: none;
-  }
-
-  .mountains-far {
-    opacity: 0.03;
-  }
-
-  .mountains-mid {
-    opacity: 0.02;
+  .ink-painting-bg {
+    opacity: 0.85;
   }
 }
 
@@ -496,5 +464,42 @@ const theme = inject('theme')
   background: #0a0e14;
   border-radius: 50%;
   opacity: 0.8;
+}
+
+/* 鼠标墨水涟漪层 */
+.ink-ripple-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ink-ripple-layer :deep(.ink-ripple) {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink-zhong);
+  opacity: 0.35;
+  transform: translate(-50%, -50%) scale(0);
+  animation: inkRipple 1.2s ease-out forwards;
+  filter: blur(0.5px);
+}
+
+@keyframes inkRipple {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.45;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(calc(5 * var(--ripple-scale, 1)));
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ink-ripple-layer :deep(.ink-ripple) {
+    animation: none;
+  }
 }
 </style>
