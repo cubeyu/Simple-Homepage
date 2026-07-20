@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="time-progress">
-      <h3>时光</h3>
+      <h3>光阴</h3>
       <div class="progress-item">
         <p class="progress-day">今日已经过去了 {{ hoursPassed }} / 24 小时</p>
         <div class="progress-bar">

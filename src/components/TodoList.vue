@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <span class="cardHeader">计划</span>
+    <span class="cardHeader">待办</span>
     <div class="cardMain">
       <div class="todoList">
         <div class="todoItem" v-for="(i, index) in todo.todoList" :key="index">

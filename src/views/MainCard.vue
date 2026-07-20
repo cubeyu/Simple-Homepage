@@ -517,7 +517,7 @@
         <Icon icon="ph:quotes-fill" width="16" height="16" aria-hidden="true" />
       </div>
 
-      <!-- 第二行：计划（左） + 总览（右） -->
+      <!-- 第二行：待办（左） + 纵览（右） -->
       <div class="content-row">
         <div class="leftBox">
           <TodoList />
@@ -525,7 +525,7 @@
 
         <div class="rightBox">
           <div class="card">
-            <span class="cardHeader">总览</span>
+            <span class="cardHeader">纵览</span>
             <nav class="linkBox" aria-label="社交链接">
               <link-btn
                 v-for="(i, index) in linkBtns.linkBtn.slice(0, 12)"

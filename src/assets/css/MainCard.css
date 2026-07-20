@@ -1210,3 +1210,52 @@
   }
 }
 
+/* ===================== 古风模块标题（居中 + 方胜装饰） ===================== */
+/* 适用：光阴（时光）/ 百工（外物）/ 待办（计划）/ 纵览（总览） */
+.mainCard .cardHeader,
+.mainCard .time-progress h3,
+.techStackCard h3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.55rem;
+  text-align: center;
+  margin: 0 0 1rem 0;
+}
+
+/* 标题两侧的方胜（对称回纹/方胜几何纹）装饰，色彩随主题自适应 */
+.mainCard .cardHeader::before,
+.mainCard .cardHeader::after,
+.mainCard .time-progress h3::before,
+.mainCard .time-progress h3::after,
+.techStackCard h3::before,
+.techStackCard h3::after {
+  content: "";
+  flex: 0 0 auto;
+  width: 46px;
+  height: 14px;
+  background-color: var(--seal-red);
+  opacity: 0.85;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 16'%3E%3Cline x1='2' y1='8' x2='16' y2='8' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M24 8 L29 3.5 L34 8 L29 12.5 Z' fill='black'/%3E%3Cpath d='M34 8 L39 3.5 L44 8 L39 12.5 Z' fill='black'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 16'%3E%3Cline x1='2' y1='8' x2='16' y2='8' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M24 8 L29 3.5 L34 8 L29 12.5 Z' fill='black'/%3E%3Cpath d='M34 8 L39 3.5 L44 8 L39 12.5 Z' fill='black'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* 右侧装饰镜像翻转，使方胜朝向文字形成对称 */
+.mainCard .cardHeader::after,
+.mainCard .time-progress h3::after,
+.techStackCard h3::after {
+  transform: scaleX(-1);
+}
+
+/* 窄屏收窄装饰，避免与紧凑布局冲突 */
+@media (max-width: 480px) {
+  .mainCard .cardHeader::before,
+  .mainCard .cardHeader::after,
+  .mainCard .time-progress h3::before,
+  .mainCard .time-progress h3::after,
+  .techStackCard h3::before,
+  .techStackCard h3::after {
+    width: 32px;
+  }
+}
+

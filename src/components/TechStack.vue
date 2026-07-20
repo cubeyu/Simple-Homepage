@@ -1,6 +1,6 @@
 <template>
   <div class="card techStackCard">
-    <h3>外物</h3>
+    <h3>百工</h3>
     <div class="techStack">
       <div
         v-for="(i, index) in techStack.techStack"
