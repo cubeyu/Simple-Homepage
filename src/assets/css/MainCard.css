@@ -1,685 +1,1212 @@
-/* 卡片光晕动画 */
-@keyframes rotateGlow {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
+/* ============================================================
+   水墨小筑 · MainCard 样式
+   设计语言：纯 CSS 水墨风，配对 src/style.css 的 --ink-* / --seal-red 变量。
+   说明：本文件曾被整体重写为玻璃拟态且装饰样式丢失，此处按项目本来的水墨身份重建。
+   ============================================================ */
 
-/* 彩虹渐变动画 */
-@keyframes rainbowGradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-@keyframes rotateRing {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes showName {
-    0% {
-        width: 0;
-    }
-    50% {
-        width: 105%;
-    }
-    100% {
-        width: 0;
-    }
-}
-
-.mainCard {
-    color: var(--text-color);
-    background: var(--card-background);
-    backdrop-filter: blur(var(--blur-strength));
-    -webkit-backdrop-filter: blur(var(--blur-strength));
-    border: 1px solid var(--card-border-color);
-    border-radius: 28px;
-    box-shadow: 
-        0 8px 32px var(--shadow-dark),
-        0 0 60px var(--card-glow),
-        inset 0 1px 0 var(--shadow-light),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
-    width: 90%;
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 2.5rem;
-    position: relative;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform, box-shadow;
-    transform: translateZ(0);
-    overflow: hidden;
-}
-
-/* 卡片光晕动画 */
-.mainCard::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: conic-gradient(
-        from 0deg,
-        transparent,
-        var(--theme-glow),
-        transparent,
-        var(--theme-glow),
-        transparent
-    );
-    animation: rotateGlow 15s linear infinite;
+/* 印章盖下动画 */
+@keyframes sealStamp {
+  0% {
+    transform: scale(2) rotate(-15deg);
     opacity: 0;
-    transition: opacity 0.5s ease;
-    z-index: -1;
+  }
+  60% {
+    transform: scale(0.9) rotate(3deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(-5deg);
+    opacity: 0.85;
+  }
 }
 
-.mainCard:hover::before {
-    opacity: 0.15;
+/* 毛笔书写动画（分割线展开） */
+@keyframes brushWrite {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
 }
 
-/* 优化PC端显示效果 */
-@media (min-width: 1200px) {
-    .mainCard {
-        padding: 3rem;
-        margin: 3rem auto;
-    }
+/* 内容渐入 - 错落有致 */
+@keyframes contentFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* 中等PC屏幕优化 */
-@media (min-width: 992px) and (max-width: 1199px) {
-    .mainCard {
-        padding: 2.5rem;
-        max-width: 1000px;
-    }
+/* 鼠标墨点拖尾淡出 */
+@keyframes inkDotFade {
+  0% {
+    opacity: 0.3;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
 }
 
+/* ===================== 卡片容器 ===================== */
+.mainCard {
+  color: var(--ink-nong);
+  background: var(--card-background);
+  border: 1px solid var(--card-border-color);
+  border-radius: 2px;
+  width: 90%;
+  max-width: 800px;
+  margin: 3.5rem auto;
+  padding: 3.5rem 3rem;
+  position: relative;
+  overflow: visible;
+  box-shadow:
+    0 1px 3px rgba(40, 30, 20, 0.04),
+    0 4px 12px rgba(40, 30, 20, 0.06);
+  transition: box-shadow 0.4s ease;
+}
+
+/* 宣纸噪点纹理（极淡，提升质感；reduced-motion 下由 style.css 关闭） */
+.mainCard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.mainCard:hover {
+  box-shadow:
+    0 2px 6px rgba(40, 30, 20, 0.06),
+    0 10px 28px rgba(40, 30, 20, 0.1);
+}
+
+/* ===================== 头部区域 ===================== */
 .mainCard .header {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  z-index: 5;
 }
 
 .mainCard .header .avatar {
-    width: 9rem;
-    height: 9rem;
-    border-radius: 50%;
-    border: none;
-    margin-right: 1rem;
-    position: relative;
-    backdrop-filter: blur(var(--blur-strength));
-    will-change: transform;
-    cursor: pointer;
-}
-
-/* 彩虹渐变光环 */
-.mainCard .header .avatar::before {
-    content: '';
-    position: absolute;
-    top: -4px;
-    left: -4px;
-    right: -4px;
-    bottom: -4px;
-    background: linear-gradient(
-        45deg,
-        #ff6b6b,
-        #feca57,
-        #48dbfb,
-        #ff9ff3,
-        #54a0ff,
-        #5f27cd,
-        #ff6b6b
-    );
-    background-size: 400% 400%;
-    border-radius: 50%;
-    z-index: -1;
-    animation: rainbowGradient 6s ease infinite;
-    opacity: 0.8;
-    transition: opacity 0.3s ease;
-}
-
-/* 外层光晕 */
-.mainCard .header .avatar::after {
-    content: '';
-    position: absolute;
-    top: -8px;
-    left: -8px;
-    right: -8px;
-    bottom: -8px;
-    background: linear-gradient(
-        45deg,
-        #ff6b6b,
-        #feca57,
-        #48dbfb,
-        #ff9ff3,
-        #54a0ff,
-        #5f27cd,
-        #ff6b6b
-    );
-    background-size: 400% 400%;
-    border-radius: 50%;
-    z-index: -2;
-    animation: rainbowGradient 6s ease infinite;
-    opacity: 0;
-    filter: blur(12px);
-    transition: opacity 0.3s ease;
-}
-
-.mainCard .header .avatar:hover::before {
-    opacity: 1;
-    animation: rainbowGradient 2s ease infinite, rotateRing 4s linear infinite;
-}
-
-.mainCard .header .avatar:hover::after {
-    opacity: 0.5;
-}
-
-.mainCard .header .avatar:hover img {
-    transform: rotate(360deg) scale(1.05);
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  border: 2px solid var(--card-border-color);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--square-background);
 }
 
 .mainCard .header .avatar img {
-    border-radius: 50%;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border: 4px solid var(--card-background);
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .mainCard .header .sayHi {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .mainCard .header .sayHi h1 {
-    font-size: 2.5rem;
-    margin: 0 0 .5rem 0;
+  font-size: 2.2rem;
+  margin: 0 0 0.4rem 0;
+  color: var(--ink-nong);
+  font-family: var(--font-family);
+  overflow-wrap: break-word;
 }
 
 .mainCard .header .sayHi .name {
-    position: relative;
-    color: rgba(0, 0, 0, .1);
-}
-
-.mainCard .header .sayHi .name::before {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    color: var(--theme-color);
-    width: 0;
-    white-space: nowrap;
-    filter: drop-shadow(0 0 5px var(--theme-color));
-    overflow: hidden;
-    animation: showName 3s ease-in-out infinite;
-    border-right: 4px solid var(--theme-color);
-    z-index: 10;
+  color: var(--seal-red);
 }
 
 .mainCard .header .sayHi .infoTags {
-    display: flex;
-    margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
 }
 
 .mainCard .header .sayHi .infoTags .tag {
-    cursor: default;
-    padding: .4rem .6rem;
-    margin-right: .4rem;
-    margin-bottom: .4rem;
-    background: var(--square-background);
-    backdrop-filter: blur(var(--blur-strength));
-    border: 1px solid var(--square-border-color);
-    border-radius: 8px;
-    font-size: .9rem;
-    box-shadow: 
-        0 2px 8px var(--shadow-dark),
-        inset 0 1px 0 var(--shadow-light);
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.6rem;
+  background: var(--square-background);
+  border: 1px solid var(--square-border-color);
+  border-radius: 2px;
+  font-size: 0.85rem;
+  color: var(--ink-dan);
+  white-space: nowrap;
 }
 
-.mainCard .header .sayHi .infoTags .tag .tag-icon {
-    margin-right: .3rem;
-    color: var(--theme-color);
+/* ===================== 自我介绍（分割线上方引导语） ===================== */
+.mainCard .self-intro {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  position: relative;
+  z-index: 2;
+  padding-inline: 2.5rem;
+  margin-top: 0.6rem;
+  flex-wrap: nowrap;
 }
 
-.mainCard .header .sayHi .infoTags .tag .boy {
-    color: #33A9DC;
+.mainCard .self-intro-text {
+  min-width: 0;
 }
 
-.mainCard .header .sayHi .infoTags .tag .girl {
-    color: #FF5E7E;
+.mainCard .self-intro p {
+  margin: 0 0 0.6rem 0;
+  line-height: 1.9;
+  font-size: 1rem;
+  color: var(--ink-zhong);
+  overflow-wrap: break-word;
 }
 
-/* 优化PC端标签区域布局 */
-@media (min-width: 769px) {
-    .mainCard .header .sayHi .infoTags {
-        flex-wrap: wrap;
-        max-width: 100%;
-    }
+.mainCard .self-intro p:last-child {
+  margin-bottom: 0;
 }
 
+.mainCard .self-intro b {
+  color: var(--ink-nong);
+  font-weight: 600;
+  border-bottom: 1px solid var(--ink-qing);
+  padding-bottom: 1px;
+}
+
+.mainCard .self-intro b.zodiac {
+  color: var(--seal-red);
+}
+
+/* 程序员动态水墨插画 */
+.mainCard .programmer-decoration {
+  width: 92px;
+  height: 92px;
+  flex-shrink: 0;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.mainCard .programmer-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+  transform-origin: center bottom;
+  animation: programmerFloat 4.2s ease-in-out infinite;
+}
+
+.mainCard .programmer-screen-code {
+  animation: screenCodeBlink 2.4s ease-in-out infinite;
+}
+
+.mainCard .programmer-code-symbols {
+  transform-origin: center;
+  animation: codeSymbolFloat 3.2s ease-in-out infinite;
+}
+
+.mainCard .programmer-ink-splash {
+  transform-origin: center;
+  animation: inkSplashPulse 5s ease-in-out infinite;
+}
+
+/* 程序员动态水墨插画动画 */
+@keyframes programmerFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes screenCodeBlink {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+@keyframes codeSymbolFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateY(-4px);
+    opacity: 0.75;
+  }
+}
+
+@keyframes inkSplashPulse {
+  0%,
+  100% {
+    opacity: 0.12;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(1.04);
+  }
+}
+
+/* ===================== 内容区域 ===================== */
 .mainCard .content {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
-    gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: relative;
+  z-index: 2;
+  /* 向内缩进，为两侧竖排诗句装饰留出安全间距，避免内容压字 */
+  padding-inline: 2.5rem;
+}
+
+.mainCard .content .content-row {
+  display: flex;
+  gap: 2rem;
+  align-items: stretch;
 }
 
 .mainCard .content .leftBox {
-    width: 32%;
-}
-
-.mainCard .content .leftBox .todoList {
-    margin-top: .5rem;
-    height: 9rem;
-    overflow-y: auto;
-}
-
-.mainCard .content .leftBox .todoList::-webkit-scrollbar {
-    width: .3rem;
-}
-
-.mainCard .content .leftBox .todoList::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.mainCard .content .leftBox .todoList::-webkit-scrollbar-thumb {
-    background: rgba(135, 206, 235, 0.3);
-    border-radius: 3px;
-}
-
-.mainCard .content .leftBox .todoList:hover::-webkit-scrollbar {
-    width: .5rem;
-}
-
-.mainCard .content .leftBox .todoList:hover::-webkit-scrollbar-thumb {
-    background: var(--theme-color);
-    border-radius: 6px;
-}
-
-.mainCard .content .leftBox .todoList .todoItem {
-    display: flex;
-    align-items: center;
-    margin: .8rem 0;
-    padding-bottom: .2rem;
-    border-bottom: 2px var(--text-color) dashed;
-    will-change: transform;
-}
-
-.mainCard .content .leftBox .todoList .todoItem span {
-    margin-left: .5rem;
+  width: 38%;
+  flex-shrink: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .mainCard .content .rightBox {
-    width: 68%;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
-.mainCard .content .rightBox .linkBox {
-    margin: .5rem 0;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 0.8rem;
+/* 内容行内的卡片等高撑满，让左右两栏底框对齐 */
+.mainCard .content .content-row .card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-/* 优化PC端链接按钮布局 */
-@media (min-width: 992px) {
-    .mainCard .content .rightBox .linkBox {
-        justify-content: flex-start;
-    }
-}
-
-.mainCard .content .rightBox .linkBox a::before {
-    display: none;
-}
-
-.mainCard .content .rightBox .zodiac::before {
-    background: #bc8cff;
-}
-
-.mainCard .content .rightBox .techStack {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
-.mainCard .content .rightBox .techStack .techItem {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
-    background: var(--square-background);
-    backdrop-filter: blur(var(--blur-strength));
-    -webkit-backdrop-filter: blur(var(--blur-strength));
-    border: 1px solid var(--square-border-color);
-    position: relative;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 
-        0 4px 15px var(--shadow-dark),
-        inset 0 1px 0 var(--shadow-light);
-    will-change: transform;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-style: preserve-3d;
-    perspective: 1000px;
-}
-
-/* 发光效果 */
-.mainCard .content .rightBox .techStack .techItem::after {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    border-radius: 16px;
-    background: var(--theme-gradient);
-    opacity: 0;
-    z-index: -1;
-    filter: blur(8px);
-    transition: opacity 0.3s ease;
-}
-
-.mainCard .content .rightBox .techStack .techItem::before {
-    content: attr(data-name);
-    position: absolute;
-    top: -2rem;
-    left: 50%;
-    color: var(--tip-color);
-    font-size: 12px;
-    font-weight: 500;
-    background: linear-gradient(135deg, rgba(30, 30, 50, 0.95), rgba(50, 50, 80, 0.95));
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    width: max-content;
-    padding: 4px 10px;
-    text-align: center;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    transform: translate(-50%, 10px);
-    opacity: 0;
-    pointer-events: none;
-}
-
-.mainCard .content .rightBox .techStack .techItem:hover {
-    transform: translateY(-8px) rotateY(15deg) rotateX(-5deg);
-    box-shadow: 
-        0 15px 35px var(--shadow-dark),
-        0 0 25px var(--shadow-glow);
-    border-color: var(--theme-color);
-}
-
-.mainCard .content .rightBox .techStack .techItem:hover::after {
-    opacity: 0.4;
-}
-
-.mainCard .content .rightBox .techStack .techItem:hover::before {
-    transform: translate(-50%, 0);
-    opacity: 1;
-}
-
-.mainCard .content .rightBox .techStack .techItem:hover .iconify {
-    transform: scale(1.15);
-    filter: drop-shadow(0 0 8px var(--theme-glow));
-}
-
-.mainCard .content .rightBox .techStack .techItem .iconify {
-    transition: all 0.3s ease;
-}
-
-.mainCard .content .rightBox .typew {
-    display: flex;
-    justify-content: center;
-    margin: 1.5rem 0;
-}
-
-.mainCard .content .rightBox .typew svg {
-    margin: 0 .5rem;
-}
-
+/* 通用卡片 */
 .mainCard .card {
-    background: var(--square-background);
-    backdrop-filter: blur(var(--blur-strength));
-    border: 1px solid var(--square-border-color);
-    border-radius: 16px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    box-shadow: 
-        0 4px 15px var(--shadow-dark),
-        inset 0 1px 0 var(--shadow-light);
-    transition: all 0.3s ease;
+  background: var(--card-background);
+  border: 1px solid var(--card-border-color);
+  border-radius: 2px;
+  padding: 1.2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(40, 30, 20, 0.04);
+}
+
+.mainCard .card:last-child {
+  margin-bottom: 0;
 }
 
 .mainCard .card .cardHeader {
-    font-size: 18px;
-    font-weight: bolder;
-    margin-bottom: .5rem;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+  color: var(--ink-nong);
+  font-family: var(--font-family);
 }
 
-.mainCard .hover {
-    transition: all .3s ease-in-out;
-    will-change: transform, box-shadow;
+.mainCard .card p {
+  margin: 0 0 0.6rem 0;
+  line-height: 1.8;
+  color: var(--ink-zhong);
+  overflow-wrap: break-word;
 }
 
-.mainCard .hover:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+.mainCard .card b {
+  color: var(--ink-nong);
+  font-weight: 600;
+  border-bottom: 1px solid var(--ink-qing);
+  padding-bottom: 1px;
 }
 
+.mainCard .card b.zodiac {
+  color: var(--seal-red);
+}
+
+/* ===================== 计划清单（左栏） ===================== */
+.mainCard .content .leftBox .todoList {
+  margin-top: 0.5rem;
+  max-height: 12rem;
+  overflow-y: auto;
+  min-width: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.mainCard .content .leftBox .todoList::-webkit-scrollbar {
+  display: none;
+}
+
+.mainCard .content .leftBox .todoList .todoItem {
+  display: flex;
+  align-items: center;
+  margin: 0.6rem 0;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px dashed var(--ink-qing);
+}
+
+.mainCard .content .leftBox .todoList .todoItem span {
+  margin-left: 0.5rem;
+  color: var(--ink-zhong);
+  overflow-wrap: break-word;
+}
+
+/* ===================== 技术栈（skillicons.dev） ===================== */
+.mainCard .content .techStack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+.mainCard .content .techStack .techItem {
+  width: 52px;
+  height: 52px;
+  border-radius: 6px;
+  background: var(--square-background);
+  border: 1px solid var(--square-border-color);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(40, 30, 20, 0.05);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mainCard .content .techStack .techItem:hover {
+  transform: translateY(-3px);
+  border-color: var(--seal-red);
+  box-shadow: 0 4px 12px rgba(40, 30, 20, 0.1);
+}
+
+.mainCard .content .techStack .techItem .skill-icon {
+  width: 30px;
+  height: 30px;
+  transition: all 0.3s ease;
+  /* 融入水墨基调：默认轻微去色，hover 还原品牌色 */
+  filter: grayscale(0.5) saturate(0.4) sepia(0.1);
+  opacity: 0.85;
+}
+
+.mainCard .content .techStack .techItem:hover .skill-icon {
+  filter: grayscale(0) saturate(1) sepia(0);
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* 图标加载失败时的文字回退 */
+.mainCard .content .techStack .techItem .techFallback {
+  font-size: 11px;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--ink-dan);
+  padding: 0 2px;
+}
+
+/* ===================== 打字机横幅 ===================== */
+.mainCard .content .typew {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem;
+  margin: 0.5rem 0;
+}
+
+.mainCard .content .typew svg {
+  color: var(--ink-dan);
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.mainCard .content .typew .typewriter {
+  flex: 1;
+  text-align: center;
+  max-width: 100%;
+  font-size: 16px;
+  letter-spacing: 3px;
+  color: var(--ink-zhong);
+  font-family: var(--font-family);
+  overflow-wrap: break-word;
+}
+
+/* ===================== 社交链接（右栏） ===================== */
+.mainCard .content .rightBox .linkBox {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 160px));
+  justify-content: center;
+  gap: 0.8rem;
+  margin: 0.5rem 0;
+}
+
+/* 抑制全局 a 下划线（链接按钮自带边框样式） */
+.mainCard .content .rightBox .linkBox a::before {
+  display: none;
+}
+
+/* ===================== 时光进度（左栏） ===================== */
 .mainCard .time-progress h3 {
-    margin-top: 0;
-    margin-bottom: 1rem;
+  margin: 0 0 1rem 0;
+  color: var(--ink-nong);
+  font-family: var(--font-family);
 }
 
 .mainCard .time-progress .progress-item {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .mainCard .time-progress .progress-item:last-child {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .mainCard .time-progress .progress-item p {
-    margin: 0 0 0.5rem 0;
-    font-size: 0.9rem;
+  margin: 0 0 0.4rem 0;
+  font-size: 0.9rem;
+  color: var(--ink-zhong);
+  overflow-wrap: break-word;
 }
 
 .mainCard .time-progress .progress-item .progress-bar {
-    height: 5px;
-    background-color: #e0e0e0;
-    border-radius: 5px;
-    overflow: hidden;
-    backdrop-filter: blur(4px);
+  height: 5px;
+  background: var(--square-border-color);
+  border-radius: 3px;
+  overflow: hidden;
 }
 
 .mainCard .time-progress .progress-item .progress-bar .progress-fill {
-    height: 100%;
-    background-color: var(--theme-color);
-    border-radius: 5px;
-    transition: width 0.3s ease;
+  height: 100%;
+  background: var(--seal-red);
+  border-radius: 3px;
+  transition: width 0.3s ease;
 }
 
+/* ===================== 页脚 ===================== */
 .mainCard .footer {
-    position: absolute;
-    bottom: 5px;
-    left: 50%;
-    transform: translateX(-50%);
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--ink-qing);
 }
 
-/* 深色主题 */
-[theme='dark'] .mainCard {
-    background: rgba(45, 45, 45, 0.7);
-    backdrop-filter: blur(12px);
+.mainCard .footer .footer-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-[theme='dark'] .mainCard .card {
-    background: rgba(45, 45, 45, 0.6);
-    border: 3px solid rgba(68, 68, 68, 0.8);
-    backdrop-filter: blur(8px);
+.mainCard .footer .footer-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1.5px solid var(--seal-red);
+  border-radius: 2px;
+  color: var(--seal-red);
+  font-size: 13px;
+  font-family: var(--font-family);
 }
 
-/* 响应式优化 - 平板设备 */
+.mainCard .footer .footer-text {
+  font-size: 0.8rem;
+  color: var(--ink-dan);
+  letter-spacing: 1px;
+}
+
+/* ===================== 悬浮工具类 ===================== */
+.mainCard .hover {
+  transition: all 0.3s ease;
+}
+
+.mainCard .hover:hover {
+  transform: translateY(-3px);
+}
+
+/* ============================================================
+   水墨装饰层（SVG 已由 MainCard.vue 内联，此处负责定位/造型）
+   ============================================================ */
+
+/* 卷轴展开遮罩 - 顶部细墨线 */
+.mainCard .scroll-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--ink-qing), transparent);
+  opacity: 0.25;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* 鼠标墨迹拖尾容器 */
+.mainCard .ink-trail-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.mainCard .ink-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--ink-nong) 0%, rgba(26, 26, 26, 0) 70%);
+  pointer-events: none;
+  animation: inkDotFade 1.5s ease-out forwards;
+}
+
+/* 四角墨渍 */
+.mainCard .ink-corner {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background: radial-gradient(circle at center, rgba(40, 30, 20, 0.05), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.mainCard .ink-top-left {
+  top: -15px;
+  left: -15px;
+}
+
+.mainCard .ink-top-right {
+  top: -15px;
+  right: -15px;
+}
+
+.mainCard .ink-bottom-left {
+  bottom: -15px;
+  left: -15px;
+}
+
+.mainCard .ink-bottom-right {
+  bottom: -15px;
+  right: -15px;
+}
+
+/* 中央淡墨晕 */
+.mainCard .ink-decoration {
+  position: absolute;
+  top: 32%;
+  left: 50%;
+  width: 240px;
+  height: 240px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(40, 30, 20, 0.05), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 左侧竖排诗词背景装饰 */
+.mainCard .poem-decoration {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.3;
+}
+
+.mainCard .poem-decoration span {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-size: 1.2rem;
+  letter-spacing: 8px;
+  color: var(--ink-zhong);
+  font-family: var(--font-family);
+  line-height: 1.8;
+}
+
+.mainCard .poem-decoration.poem-left {
+  left: 12px;
+}
+
+.mainCard .poem-decoration.poem-right {
+  right: 12px;
+}
+
+/* 朱砂印章 - 点睛之笔 */
+.mainCard .seal-decoration {
+  position: absolute;
+  top: 25px;
+  right: 80px;
+  width: 52px;
+  height: 52px;
+  border: 2px solid var(--seal-red);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: var(--seal-red);
+  font-family: var(--font-family);
+  opacity: 0.85;
+  z-index: 3;
+  animation: sealStamp 0.8s ease-out both;
+}
+
+/* 左下角圆形闲章 */
+.mainCard .seal-decoration.seal-round {
+  top: auto;
+  right: auto;
+  bottom: 18px;
+  left: 18px;
+  width: 44px;
+  height: 44px;
+  font-size: 20px;
+}
+
+/* 标题下方小印章 */
+.mainCard .seal-decoration.seal-small {
+  top: 92px;
+  right: 38px;
+  left: auto;
+  width: auto;
+  min-width: 40px;
+  height: 26px;
+  padding: 0 6px;
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+/* 左侧斜靠的剑 */
+.mainCard .sword-decoration {
+  position: absolute;
+  top: -35px;
+  left: -28px;
+  width: 90px;
+  height: 250px;
+  transform: rotate(-12deg);
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.mainCard .sword-decoration .sword-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* 右侧毛笔 */
+.mainCard .brush-decoration {
+  position: absolute;
+  top: -30px;
+  right: -35px;
+  width: 90px;
+  height: 270px;
+  transform: rotate(10deg);
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.mainCard .brush-decoration .brush-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* 左下角竹叶 */
+.mainCard .bamboo-decoration {
+  position: absolute;
+  bottom: -10px;
+  left: -5px;
+  width: 80px;
+  height: 120px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.mainCard .bamboo-decoration .bamboo-stem {
+  position: absolute;
+  bottom: 0;
+  left: 34px;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to top, var(--ink-nong), var(--ink-qing));
+  border-radius: 2px;
+  transform: rotate(-8deg);
+  transform-origin: bottom;
+}
+
+.mainCard .bamboo-decoration .bamboo-leaf {
+  position: absolute;
+  width: 32px;
+  height: 9px;
+  background: var(--ink-zhong);
+  border-radius: 0 9px 9px 0;
+  opacity: 0.85;
+}
+
+.mainCard .bamboo-decoration .leaf-1 {
+  bottom: 62px;
+  left: 30px;
+  transform: rotate(28deg);
+}
+
+.mainCard .bamboo-decoration .leaf-2 {
+  bottom: 82px;
+  left: 30px;
+  transform: rotate(-18deg);
+}
+
+.mainCard .bamboo-decoration .leaf-3 {
+  bottom: 46px;
+  left: 30px;
+  transform: rotate(58deg);
+}
+
+/* 右下角梅花 */
+.mainCard .plum-decoration {
+  position: absolute;
+  bottom: -10px;
+  right: -5px;
+  width: 90px;
+  height: 110px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.mainCard .plum-decoration .plum-branch {
+  position: absolute;
+  background: var(--ink-nong);
+  border-radius: 2px;
+}
+
+.mainCard .plum-decoration .branch-1 {
+  bottom: 0;
+  right: 42px;
+  width: 3px;
+  height: 100%;
+  transform: rotate(10deg);
+  transform-origin: bottom;
+}
+
+.mainCard .plum-decoration .branch-2 {
+  bottom: 32px;
+  right: 30px;
+  width: 42px;
+  height: 3px;
+  transform: rotate(-25deg);
+}
+
+.mainCard .plum-decoration .plum-flower {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: var(--seal-red-light);
+  border-radius: 50% 50% 50% 0;
+  opacity: 0.85;
+}
+
+.mainCard .plum-decoration .flower-1 {
+  bottom: 72px;
+  right: 22px;
+}
+
+.mainCard .plum-decoration .flower-2 {
+  bottom: 52px;
+  right: 46px;
+}
+
+.mainCard .plum-decoration .flower-3 {
+  bottom: 86px;
+  right: 42px;
+}
+
+/* 右侧竖排题跋 */
+.mainCard .vertical-calligraphy {
+  position: absolute;
+  top: 130px;
+  right: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.mainCard .vertical-calligraphy .calligraphy-text {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-size: 1.1rem;
+  letter-spacing: 6px;
+  color: var(--ink-zhong);
+  font-family: var(--font-family);
+  opacity: 0.35;
+  text-shadow:
+    1px 1px 2px rgba(40, 30, 20, 0.06),
+    0 0 4px rgba(40, 30, 20, 0.03);
+  position: relative;
+}
+
+.mainCard .vertical-calligraphy .calligraphy-text::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  bottom: -8px;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    var(--ink-qing) 15%,
+    var(--ink-dan) 50%,
+    var(--ink-qing) 85%,
+    transparent 100%
+  );
+}
+
+.mainCard .vertical-calligraphy .calligraphy-seal {
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid var(--seal-red);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--seal-red);
+  opacity: 0.4;
+  font-family: var(--font-family);
+  transform: rotate(-5deg);
+}
+
+/* 水墨笔触分割线 */
+.mainCard .ink-divider {
+  width: 100%;
+  margin: 1.5rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.mainCard .ink-divider .ink-divider-svg {
+  width: 100%;
+  height: 20px;
+}
+
+/* ============================================================
+   响应式
+   ============================================================ */
+
+/* 中等桌面：卡片内边距收窄，同步加大内容缩进以避开诗句 */
 @media (max-width: 992px) {
-    .mainCard {
-        width: 95%;
-        max-width: 900px;
-        padding: 1.8rem;
-    }
-    
-    .mainCard .header .sayHi h1 {
-        font-size: 2.2rem;
-    }
-    
-    .mainCard .content {
-        gap: 1.5rem;
-    }
-    
-    .mainCard .content .leftBox {
-        width: 35%;
-    }
-    
-    .mainCard .content .rightBox {
-        width: 63%;
-    }
+  .mainCard {
+    width: 95%;
+    max-width: 760px;
+    padding: 2.5rem 2rem;
+  }
+
+  .mainCard .content {
+    padding-inline: 2rem;
+  }
+
+  .mainCard .self-intro {
+    padding-inline: 2rem;
+  }
+
+  .mainCard .content .content-row {
+    gap: 1.5rem;
+  }
+
+  .mainCard .content .leftBox {
+    width: 35%;
+  }
+
+  .mainCard .content .rightBox {
+    width: 65%;
+    flex: 1;
+  }
+
+  .mainCard .header .sayHi h1 {
+    font-size: 2rem;
+  }
 }
 
-/* 响应式优化 - 小型平板/大型手机 */
+/* 平板/大手机：隐藏非必要装饰，回归留白 */
 @media (max-width: 768px) {
-    .mainCard {
-        width: 98%;
-        padding: 1.5rem;
-        border-radius: 20px;
-        padding-bottom: 3rem;
-    }
-    
-    .mainCard:hover {
-        transform: translateY(-3px);
-    }
-    
-    .mainCard .card {
-        border-radius: 16px;
-    }
-    
-    .mainCard .header .avatar {
-        width: 6rem;
-        height: 6rem;
-    }
-    
-    .mainCard .header .sayHi h1 {
-        font-size: 2rem;
-    }
-    
-    .mainCard .content {
-        flex-direction: column-reverse;
-        align-items: center;
-        gap: 1.5rem;
-    }
-    
-    .mainCard .content .leftBox,
-    .mainCard .content .rightBox {
-        width: 100%;
-    }
-    
-    .mainCard .content .leftBox .todoList .todoItem:hover,
-    .mainCard .content .rightBox .techStack .techItem:hover {
-        transform: none;
-    }
-    
-    .mainCard .content .rightBox .linkBox {
-        justify-content: center;
-        gap: 0.8rem;
-    }
+  .mainCard {
+    width: 98%;
+    padding: 1.8rem 1.5rem;
+    border-radius: 2px;
+    margin: 2rem auto;
+  }
+
+  .mainCard .sword-decoration,
+  .mainCard .brush-decoration,
+  .mainCard .bamboo-decoration,
+  .mainCard .plum-decoration,
+  .mainCard .poem-decoration,
+  .mainCard .vertical-calligraphy,
+  .mainCard .scroll-mask,
+  .mainCard .seal-decoration.seal-small,
+  .mainCard .programmer-decoration {
+    display: none;
+  }
+
+  .mainCard .content {
+    padding-inline: 0;
+    gap: 1.2rem;
+  }
+
+  .mainCard .self-intro {
+    padding-inline: 0;
+  }
+
+  .mainCard .content .content-row {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .mainCard .content .leftBox,
+  .mainCard .content .rightBox {
+    width: 100%;
+  }
+
+  .mainCard .header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .mainCard .header .avatar {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .mainCard .header .sayHi h1 {
+    font-size: 1.8rem;
+  }
+
+  .mainCard .content .rightBox .linkBox {
+    justify-content: center;
+  }
 }
 
-/* 响应式优化 - 中型手机 */
+/* 中型手机 */
 @media (max-width: 640px) {
-    .mainCard {
-        padding: 1.2rem;
-    }
-    
-    .mainCard .header {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .mainCard .header .avatar {
-        margin-right: 0;
-        margin-bottom: 1rem;
-    }
-    
-    .mainCard .header .sayHi h1 {
-        font-size: 1.8rem;
-    }
-    
-    .mainCard .header .sayHi .infoTags {
-        justify-content: center;
-    }
-    
-    .mainCard .content .rightBox .techStack .techItem {
-        width: 44px;
-        height: 44px;
-    }
+  .mainCard {
+    padding: 1.4rem 1.2rem;
+  }
+
+  .mainCard .header .sayHi h1 {
+    font-size: 1.6rem;
+  }
+
+  .mainCard .card {
+    padding: 1rem;
+  }
+
+  .mainCard .content .leftBox .todoList {
+    max-height: 10rem;
+  }
+
+  .mainCard .content .techStack .techItem {
+    width: 46px;
+    height: 46px;
+  }
+
+  .mainCard .content .techStack .techItem .skill-icon {
+    width: 26px;
+    height: 26px;
+  }
 }
 
-/* 响应式优化 - 小型手机 */
+/* 小型手机 */
 @media (max-width: 480px) {
-    .mainCard {
-        width: 100%;
-        padding: 1rem;
-        border-radius: 16px;
-    }
-    
-    .mainCard .header .avatar {
-        width: 5rem;
-        height: 5rem;
-    }
-    
-    .mainCard .header .sayHi h1 {
-        font-size: 1.6rem;
-    }
-    
-    .mainCard .header .sayHi .infoTags .tag {
-        font-size: 0.8rem;
-        padding: 0.3rem;
-    }
-    
-    .mainCard .card {
-        padding: 0.8rem;
-        border-radius: 14px;
-    }
-    
-    .mainCard .card .cardHeader {
-        font-size: 16px;
-    }
-    
-    .mainCard .content .leftBox .todoList {
-        height: 8rem;
-    }
-    
-    .mainCard .content .rightBox .techStack .techItem {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .mainCard .content .rightBox .linkBox .linkBtn {
-        width: 45%;
-        min-width: 100px;
-    }
+  .mainCard {
+    padding: 1.2rem 1rem;
+  }
+
+  .mainCard .header .avatar {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .mainCard .header .sayHi h1 {
+    font-size: 1.5rem;
+  }
+
+  .mainCard .card .cardHeader {
+    font-size: 16px;
+  }
+
+  .mainCard .content .techStack .techItem {
+    width: 42px;
+    height: 42px;
+  }
+
+  .mainCard .content .techStack .techItem .skill-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .mainCard .content .rightBox .linkBox {
+    grid-template-columns: repeat(2, minmax(0, 160px));
+  }
+
+  .mainCard .content .typew .typewriter {
+    font-size: 13px;
+    letter-spacing: 2px;
+  }
 }
+
+/* 超窄屏（iPhone SE 等） */
+@media (max-width: 360px) {
+  .mainCard {
+    padding: 1rem 0.8rem;
+    margin: 1.2rem auto;
+  }
+
+  .mainCard .header .avatar {
+    width: 4.2rem;
+    height: 4.2rem;
+  }
+
+  .mainCard .header .sayHi h1 {
+    font-size: 1.35rem;
+  }
+
+  .mainCard .card {
+    padding: 0.8rem;
+  }
+
+  .mainCard .content .techStack .techItem {
+    width: 38px;
+    height: 38px;
+  }
+
+  .mainCard .content .techStack .techItem .skill-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .mainCard .content .rightBox .linkBox {
+    grid-template-columns: minmax(0, 160px);
+  }
+}
+
+/* ============================================================
+   卷轴杆（顶部和底部卷轴，两端带轴头与流苏）
+   ============================================================ */
+
+.mainCard .scroll-rod {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 30px;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.mainCard .scroll-rod.scroll-top {
+  top: -15px;
+}
+
+.mainCard .scroll-rod.scroll-bottom {
+  bottom: -15px;
+}
+
+.mainCard .scroll-rod-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 卷轴轴头 */
+.mainCard .scroll-cap {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 40px;
+  pointer-events: none;
+}
+
+.mainCard .scroll-cap-left {
+  left: -10px;
+}
+
+.mainCard .scroll-cap-right {
+  right: -10px;
+}
+
+.mainCard .scroll-cap-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 底部轴头流苏 */
+.mainCard .scroll-bottom .scroll-cap .scroll-tassel {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2px;
+  padding-top: 2px;
+  pointer-events: none;
+}
+
+.mainCard .scroll-bottom .scroll-cap .scroll-tassel .tassel-string {
+  width: 1px;
+  height: 6px;
+  background: var(--seal-red);
+  opacity: 0.6;
+}
+
+/* 移动端隐藏卷轴杆，避免与紧凑布局冲突 */
+@media (max-width: 768px) {
+  .mainCard .scroll-rod,
+  .mainCard .scroll-cap,
+  .mainCard .scroll-tassel {
+    display: none;
+  }
+}
+
+/* 尊重用户偏好：减少动态水墨插画动画 */
+@media (prefers-reduced-motion: reduce) {
+  .mainCard .programmer-svg,
+  .mainCard .programmer-screen-code,
+  .mainCard .programmer-code-symbols,
+  .mainCard .programmer-ink-splash {
+    animation: none;
+  }
+}
+

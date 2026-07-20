@@ -2,74 +2,76 @@
   /* 背景 - 纯净宣纸色，留大量空白 */
   --background: #f7f3eb;
   --background-solid: #f7f3eb;
-  
+
   /* 主题色 - 朱砂红（仅用于印章和重点点缀） */
   --theme-color: #9c2c2c;
   --theme-gradient: linear-gradient(135deg, #7a1f1f 0%, #9c2c2c 50%, #b53a3a 100%);
-  
+
   /* 文字颜色 - 墨色分五色：焦、浓、重、淡、清 */
   --text-color: #1a1a1a;
   --text-secondary: #4a4a4a;
-  
+
   /* 卡片背景 - 纯白宣纸 */
   --card-background: #fdfbf7;
   --card-border-color: rgba(80, 70, 60, 0.15);
-  
+
   /* 小方块背景 - 淡墨 */
   --square-background: #faf8f4;
   --square-border-color: rgba(80, 70, 60, 0.12);
-  
+
   /* 阴影效果 - 极淡的墨影 */
   --shadow-light: rgba(255, 255, 255, 0.5);
   --shadow-dark: rgba(40, 30, 20, 0.06);
-  
+
   /* 墨色五色 - 整体加深一档，提升文字可读性 */
   --ink-jiao: #0d0d0d;
   --ink-nong: #1a1a1a;
   --ink-zhong: #2a2a2a;
   --ink-dan: #4a4a4a;
   --ink-qing: #6a6a6a;
-  
+
   /* 印章红 */
   --seal-red: #9c2c2c;
   --seal-red-light: #b53a3a;
-  
+
   /* 字体 - 优先使用钉钉进步体 */
-  --font-family: 'DingTalkJinBuTi', 'STXingkai', '华文行楷', 'STKaiti', 'KaiTi', '楷体', 'STSong', 'SimSun', '宋体', serif;
+  --font-family:
+    'DingTalkJinBuTi', 'STXingkai', '华文行楷', 'STKaiti', 'KaiTi', '楷体', 'STSong', 'SimSun',
+    '宋体', serif;
 }
 
 [theme='dark'] {
   /* 背景 - 夜墨深靛，不是纯黑，有深夜墨蓝感 */
   --background: #0a0e14;
   --background-solid: #0a0e14;
-  
+
   /* 主题色 - 朱砂印泥，温润不刺眼 */
   --theme-color: #c94a3f;
   --theme-gradient: linear-gradient(135deg, #a83830 0%, #c94a3f 50%, #d85a4f 100%);
-  
+
   /* 文字颜色 - 暖银白，如月光下的宣纸 */
   --text-color: #ece8e0;
   --text-secondary: #b8b4ac;
-  
+
   /* 卡片背景 - 深墨色，带微微的蓝紫光，如夜色中的砚台 */
   --card-background: #121820;
   --card-border-color: rgba(150, 140, 120, 0.2);
-  
+
   /* 小方块背景 - 更深一层墨色 */
   --square-background: #161d27;
   --square-border-color: rgba(150, 140, 120, 0.18);
-  
+
   /* 阴影效果 - 夜色中的微光 */
   --shadow-light: rgba(200, 190, 170, 0.03);
   --shadow-dark: rgba(0, 0, 0, 0.5);
-  
+
   /* 墨色五色（夜墨版）- 整体提亮一档，提升暗色可读性 */
   --ink-jiao: #f5f1e9;
   --ink-nong: #e8e4dc;
   --ink-zhong: #c8c4bc;
   --ink-dan: #a8a49c;
   --ink-qing: #888478;
-  
+
   /* 印章红 - 夜色中的朱砂，温润不艳 */
   --seal-red: #c94a3f;
   --seal-red-light: #d85a4f;

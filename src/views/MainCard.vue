@@ -31,22 +31,20 @@
           fill="url(#scrollRodHighlight)"
           opacity="0.5"
         />
+        <linearGradient id="capGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color: var(--ink-zhong); stop-opacity: 0.7" />
+          <stop offset="30%" style="stop-color: var(--ink-nong); stop-opacity: 0.9" />
+          <stop offset="70%" style="stop-color: var(--ink-zhong); stop-opacity: 0.8" />
+          <stop offset="100%" style="stop-color: var(--ink-qing); stop-opacity: 0.5" />
+        </linearGradient>
+        <radialGradient id="capSealGrad" cx="30%" cy="30%" r="70%">
+          <stop offset="0%" style="stop-color: var(--seal-red-light); stop-opacity: 0.9" />
+          <stop offset="60%" style="stop-color: var(--seal-red); stop-opacity: 0.8" />
+          <stop offset="100%" style="stop-color: var(--seal-red); stop-opacity: 0.6" />
+        </radialGradient>
       </svg>
       <div class="scroll-cap scroll-cap-left">
         <svg viewBox="0 0 30 40" class="scroll-cap-svg">
-          <defs>
-            <linearGradient id="capGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style="stop-color: var(--ink-zhong); stop-opacity: 0.7" />
-              <stop offset="30%" style="stop-color: var(--ink-nong); stop-opacity: 0.9" />
-              <stop offset="70%" style="stop-color: var(--ink-zhong); stop-opacity: 0.8" />
-              <stop offset="100%" style="stop-color: var(--ink-qing); stop-opacity: 0.5" />
-            </linearGradient>
-            <radialGradient id="capSealGrad" cx="30%" cy="30%" r="70%">
-              <stop offset="0%" style="stop-color: var(--seal-red-light); stop-opacity: 0.9" />
-              <stop offset="60%" style="stop-color: var(--seal-red); stop-opacity: 0.8" />
-              <stop offset="100%" style="stop-color: var(--seal-red); stop-opacity: 0.6" />
-            </radialGradient>
-          </defs>
           <ellipse cx="15" cy="20" rx="12" ry="16" fill="url(#capGrad)" opacity="0.8" />
           <ellipse cx="15" cy="20" rx="8" ry="11" fill="url(#capSealGrad)" opacity="0.7" />
           <ellipse cx="12" cy="16" rx="3" ry="4" fill="var(--seal-red-light)" opacity="0.4" />
@@ -93,7 +91,7 @@
       </div>
       <div class="scroll-cap scroll-cap-right">
         <svg viewBox="0 0 30 40" class="scroll-cap-svg">
-          <ellipse cx="15" cy="20" rx="12" ry="16" fill="url(#capGradRight)" opacity="0.8" />
+          <ellipse cx="15" cy="20" rx="12" ry="16" fill="url(#capGrad)" opacity="0.8" />
           <ellipse cx="15" cy="20" rx="8" ry="11" fill="url(#capSealGrad)" opacity="0.7" />
           <ellipse cx="18" cy="16" rx="3" ry="4" fill="var(--seal-red-light)" opacity="0.4" />
         </svg>
@@ -355,6 +353,105 @@
     <!-- 头部区域 -->
     <Header />
 
+    <!-- 自我介绍（移至分割线上方，作为引导语） -->
+    <div class="self-intro" aria-label="自我介绍">
+      <div class="self-intro-text">
+        <p>你好，很高兴认识你</p>
+        <p>
+          我叫
+          <b>{{ config.name }}</b>
+          （<template v-if="config.age && config.age !== 'Null'">{{ config.age }}岁的 </template
+          ><b class="zodiac">{{ config.zodiac }}</b
+          >）
+        </p>
+        <p>
+          是一名
+          <span v-for="(i, index) in config.professions" :key="index">
+            <b>{{ i }}</b>
+            <span v-if="index < config.professions.length - 1">、</span>
+          </span>
+        </p>
+      </div>
+
+      <div class="programmer-decoration" aria-hidden="true" title="程序员">
+        <svg viewBox="0 0 100 100" class="programmer-svg" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <radialGradient id="programmerInk" cx="35%" cy="30%" r="65%">
+              <stop offset="0%" style="stop-color: var(--ink-nong); stop-opacity: 0.95" />
+              <stop offset="55%" style="stop-color: var(--ink-zhong); stop-opacity: 0.7" />
+              <stop offset="100%" style="stop-color: var(--ink-qing); stop-opacity: 0.25" />
+            </radialGradient>
+            <filter id="programmerBlur">
+              <feGaussianBlur stdDeviation="0.6" />
+            </filter>
+          </defs>
+
+          <!-- 背景淡墨晕 -->
+          <ellipse
+            class="programmer-ink-splash"
+            cx="50"
+            cy="48"
+            rx="38"
+            ry="32"
+            fill="url(#programmerInk)"
+            opacity="0.15"
+            filter="url(#programmerBlur)"
+          />
+
+          <!-- 案几 -->
+          <path
+            d="M10 83 Q50 87 90 83"
+            stroke="var(--ink-zhong)"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            fill="none"
+            opacity="0.75"
+          />
+
+          <!-- 笔记本电脑 -->
+          <path
+            d="M34 83 L44 69 L44 56 Q44 51 50 51 Q56 51 56 56 L56 69 L66 83"
+            stroke="var(--ink-nong)"
+            stroke-width="2"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <g class="programmer-screen-code">
+            <path d="M47 62 L53 62" stroke="var(--ink-zhong)" stroke-width="1.4" stroke-linecap="round" opacity="0.5" />
+            <path d="M47 67 L52 67" stroke="var(--ink-zhong)" stroke-width="1.4" stroke-linecap="round" opacity="0.5" />
+          </g>
+
+          <!-- 人物 -->
+          <circle cx="50" cy="28" r="8.5" fill="var(--ink-nong)" opacity="0.75" />
+          <path
+            d="M50 37 C42 46 36 54 38 70 L62 70 C64 54 58 46 50 37"
+            fill="var(--ink-zhong)"
+            opacity="0.6"
+          />
+          <path d="M39 53 Q48 60 52 58" stroke="var(--ink-nong)" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.8" />
+          <path d="M61 53 Q52 60 48 58" stroke="var(--ink-nong)" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.8" />
+
+          <!-- 漂浮代码符号 </> -->
+          <g class="programmer-code-symbols" stroke="var(--ink-zhong)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.55">
+            <path d="M74 32 L70 36 L74 40" />
+            <path d="M82 40 L86 36 L82 32" />
+          </g>
+
+          <!-- 茶盏 -->
+          <path
+            d="M16 74 L16 70 Q16 68 18 68 L24 68 Q26 68 26 70 L26 74 Q26 78 21 78 Q16 78 16 74"
+            stroke="var(--ink-zhong)"
+            stroke-width="1.5"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            opacity="0.6"
+          />
+        </svg>
+      </div>
+    </div>
+
     <!-- 水墨笔触分割线 -->
     <div class="ink-divider" aria-hidden="true">
       <svg viewBox="0 0 800 20" class="ink-divider-svg" preserveAspectRatio="none">
@@ -403,28 +500,14 @@
 
     <!-- 内容区域 -->
     <div class="content">
+      <!-- 第一行：时光（左） + 外物（右）对齐 -->
       <div class="content-row">
         <div class="leftBox">
-          <TodoList />
+          <TimeProgress />
         </div>
 
         <div class="rightBox">
           <div class="card">
-            <p>你好，很高兴认识你</p>
-            <p>
-              我叫
-              <b>{{ config.name }}</b>
-              （<template v-if="config.age && config.age !== 'Null'">{{ config.age }}岁的 </template
-              ><b class="zodiac">{{ config.zodiac }}</b
-              >）
-            </p>
-            <p>
-              是一名
-              <span v-for="(i, index) in config.professions" :key="index">
-                <b>{{ i }}</b>
-                <span v-if="index < config.professions.length - 1">、</span>
-              </span>
-            </p>
             <TechStack />
           </div>
         </div>
@@ -436,22 +519,26 @@
         <Icon icon="ph:quotes-fill" width="16" height="16" aria-hidden="true" />
       </div>
 
+      <!-- 第二行：计划（左） + 总览（右） -->
       <div class="content-row">
         <div class="leftBox">
-          <TimeProgress />
+          <TodoList />
         </div>
 
         <div class="rightBox">
-          <nav class="linkBox card" aria-label="社交链接">
-            <link-btn
-              v-for="(i, index) in linkBtns.linkBtn.slice(0, 12)"
-              :key="index"
-              :icon="i.icon"
-              :text="i.text"
-              :color="i.color"
-              :url="i.url"
-            ></link-btn>
-          </nav>
+          <div class="card">
+            <span class="cardHeader">总览</span>
+            <nav class="linkBox" aria-label="社交链接">
+              <link-btn
+                v-for="(i, index) in linkBtns.linkBtn.slice(0, 12)"
+                :key="index"
+                :icon="i.icon"
+                :text="i.text"
+                :color="i.color"
+                :url="i.url"
+              ></link-btn>
+            </nav>
+          </div>
         </div>
       </div>
     </div>
@@ -459,7 +546,7 @@
     <footer class="footer">
       <div class="footer-content">
         <span class="footer-seal">墨</span>
-        <p class="footer-text">©2026 cubeyu · 水墨小筑</p>
+        <p class="footer-text">©{{ new Date().getFullYear() }} cubeyu · 水墨小筑</p>
       </div>
     </footer>
   </div>
