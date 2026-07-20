@@ -6,6 +6,8 @@
     <CustomCursor />
     <!-- 主卡片内容 -->
     <main-card></main-card>
+    <!-- Vercel Speed Insights -->
+    <SpeedInsights />
   </div>
 </template>
 
@@ -13,6 +15,7 @@
 import MainCard from './views/MainCard.vue'
 import ParticlesBackground from './components/ParticlesBackground.vue'
 import CustomCursor from './components/CustomCursor.vue'
+import { SpeedInsights } from '@vercel/speed-insights/vue'
 import { provide } from 'vue'
 import { useTheme } from './composables/useTheme'
 
