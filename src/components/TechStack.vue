@@ -16,9 +16,9 @@
           width="36"
           height="36"
           loading="lazy"
-          @error="failed.add(index)"
+          @error="markFailed(index)"
         />
-        <span v-else class="techFallback">{{ i.name }}</span>
+        <span v-else class="techFallback">{{ abbr(i.name) }}</span>
       </div>
     </div>
   </div>
@@ -31,6 +31,16 @@ import techStack from '../config/techStack.json'
 const failed = reactive(new Set())
 
 function iconUrl(slug) {
-  return `https://skillicons.dev/icons?i=${slug}`
+  // 本地静态 SVG，避免无 VPN 时 skillicons.dev 无法加载
+  return `/icons/tech/${slug}.svg`
+}
+
+function markFailed(index) {
+  failed.add(index)
+}
+
+function abbr(name) {
+  //  fallback 显示简短缩写，防止长名在小方格内溢出
+  return name.length <= 5 ? name : name.slice(0, 4)
 }
 </script>

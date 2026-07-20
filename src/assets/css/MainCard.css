@@ -297,8 +297,11 @@
   font-size: 11px;
   line-height: 1.2;
   text-align: center;
-  color: var(--ink-dan);
+  color: var(--ink-nong);
+  font-weight: 600;
   padding: 0 2px;
+  max-width: 100%;
+  overflow-wrap: break-word;
 }
 
 /* ===================== 打字机横幅 ===================== */
@@ -1177,9 +1180,9 @@
     margin-bottom: 0.45rem;
   }
 
-  /* 限制内部可滚动区，避免撑高整卡 */
+  /* 限制内部可滚动区，避免撑高整卡；12rem 足够当前 4 条待办完整显示 */
   .mainCard .content .leftBox .todoList {
-    max-height: 8rem;
+    max-height: 12rem;
   }
 
   .mainCard .content .typew {
