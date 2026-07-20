@@ -59,6 +59,18 @@
     {
       "icon": "docker",
       "name": "Docker"
+    },
+    {
+      "icon": "typescript",
+      "name": "TypeScript"
+    },
+    {
+      "icon": "react",
+      "name": "React"
+    },
+    {
+      "icon": "linux",
+      "name": "Linux"
     }
   ]
 }
