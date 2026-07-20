@@ -365,7 +365,7 @@
           >）
         </p>
         <p>
-          是一名
+          爱好是
           <span v-for="(i, index) in config.professions" :key="index">
             <b>{{ i }}</b>
             <span v-if="index < config.professions.length - 1">、</span>
@@ -507,9 +507,7 @@
         </div>
 
         <div class="rightBox">
-          <div class="card">
-            <TechStack />
-          </div>
+          <TechStack />
         </div>
       </div>
 

@@ -45,16 +45,16 @@
       "name": "Vite"
     },
     {
-      "icon": "tailwind",
-      "name": "Tailwind CSS"
-    },
-    {
       "icon": "java",
       "name": "Java"
     },
     {
       "icon": "jquery",
       "name": "Jquery"
+    },
+    {
+      "icon": "git",
+      "name": "Git"
     },
     {
       "icon": "docker",
