@@ -1112,3 +1112,89 @@
   }
 }
 
+/* ============================================================
+   PC / 平板（横屏）全屏适配：不出现整页滚动条，整卡可见
+   仅作用于 ≥769px 宽；≤768px（手机/竖屏平板）保持原样
+   ============================================================ */
+@media (min-width: 769px) {
+  /* 锁死整页，杜绝 PC / pad 端滚动条 */
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .mainCard {
+    /* 垂直 + 水平居中：上下留白永远一致 */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* 覆盖基础 margin，避免 absolute 定位时 margin 造成偏移 */
+    margin: 0;
+    width: 90%;
+    max-width: 800px;
+    padding: 1.5rem 1.8rem;
+    /* 极端矮窗兜底：内容不溢出到整页，仅在卡片内裁切 */
+    max-height: calc(100dvh - 2rem);
+    overflow: hidden;
+  }
+
+  .mainCard .header {
+    gap: 0.7rem;
+  }
+
+  .mainCard .header .avatar {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .mainCard .header .sayHi h1 {
+    font-size: 1.6rem;
+    margin: 0 0 0.15rem 0;
+  }
+
+  .mainCard .header .sayHi .infoTags {
+    margin-top: 0.25rem;
+  }
+
+  .mainCard .content {
+    gap: 0.8rem;
+    padding-inline: 1.4rem;
+  }
+
+  .mainCard .content .content-row {
+    gap: 0.9rem;
+  }
+
+  .mainCard .card {
+    padding: 0.8rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .mainCard .card .cardHeader,
+  .mainCard .time-progress h3 {
+    margin-bottom: 0.45rem;
+  }
+
+  /* 限制内部可滚动区，避免撑高整卡 */
+  .mainCard .content .leftBox .todoList {
+    max-height: 8rem;
+  }
+
+  .mainCard .content .typew {
+    padding: 0.45rem 1rem;
+    margin: 0.25rem 0;
+  }
+
+  .mainCard .content .rightBox .linkBox {
+    gap: 0.55rem;
+    margin: 0.3rem 0;
+  }
+
+  .mainCard .footer {
+    margin-top: 0.9rem;
+    padding-top: 0.6rem;
+  }
+}
+
