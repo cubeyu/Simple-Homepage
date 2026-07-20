@@ -152,123 +152,6 @@
   white-space: nowrap;
 }
 
-/* ===================== 自我介绍（分割线上方引导语） ===================== */
-.mainCard .self-intro {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 1rem;
-  position: relative;
-  z-index: 2;
-  padding-inline: 2.5rem;
-  margin-top: 0.6rem;
-  flex-wrap: nowrap;
-}
-
-.mainCard .self-intro-text {
-  min-width: 0;
-}
-
-.mainCard .self-intro p {
-  margin: 0 0 0.6rem 0;
-  line-height: 1.9;
-  font-size: 1rem;
-  color: var(--ink-zhong);
-  overflow-wrap: break-word;
-}
-
-.mainCard .self-intro p:last-child {
-  margin-bottom: 0;
-}
-
-.mainCard .self-intro b {
-  color: var(--ink-nong);
-  font-weight: 600;
-  border-bottom: 1px solid var(--ink-qing);
-  padding-bottom: 1px;
-}
-
-.mainCard .self-intro b.zodiac {
-  color: var(--seal-red);
-}
-
-/* 程序员动态水墨插画 */
-.mainCard .programmer-decoration {
-  width: 92px;
-  height: 92px;
-  flex-shrink: 0;
-  opacity: 0.9;
-  pointer-events: none;
-}
-
-.mainCard .programmer-svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-  overflow: visible;
-  transform-origin: center bottom;
-  animation: programmerFloat 4.2s ease-in-out infinite;
-}
-
-.mainCard .programmer-screen-code {
-  animation: screenCodeBlink 2.4s ease-in-out infinite;
-}
-
-.mainCard .programmer-code-symbols {
-  transform-origin: center;
-  animation: codeSymbolFloat 3.2s ease-in-out infinite;
-}
-
-.mainCard .programmer-ink-splash {
-  transform-origin: center;
-  animation: inkSplashPulse 5s ease-in-out infinite;
-}
-
-/* 程序员动态水墨插画动画 */
-@keyframes programmerFloat {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
-}
-
-@keyframes screenCodeBlink {
-  0%,
-  100% {
-    opacity: 0.3;
-  }
-  50% {
-    opacity: 0.85;
-  }
-}
-
-@keyframes codeSymbolFloat {
-  0%,
-  100% {
-    transform: translateY(0);
-    opacity: 0.45;
-  }
-  50% {
-    transform: translateY(-4px);
-    opacity: 0.75;
-  }
-}
-
-@keyframes inkSplashPulse {
-  0%,
-  100% {
-    opacity: 0.12;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.2;
-    transform: scale(1.04);
-  }
-}
-
 /* ===================== 内容区域 ===================== */
 .mainCard .content {
   display: flex;
@@ -335,17 +218,6 @@
   line-height: 1.8;
   color: var(--ink-zhong);
   overflow-wrap: break-word;
-}
-
-.mainCard .card b {
-  color: var(--ink-nong);
-  font-weight: 600;
-  border-bottom: 1px solid var(--ink-qing);
-  padding-bottom: 1px;
-}
-
-.mainCard .card b.zodiac {
-  color: var(--seal-red);
 }
 
 /* ===================== 计划清单（左栏） ===================== */
@@ -932,10 +804,6 @@
     padding-inline: 2rem;
   }
 
-  .mainCard .self-intro {
-    padding-inline: 2rem;
-  }
-
   .mainCard .content .content-row {
     gap: 1.5rem;
   }
@@ -970,18 +838,13 @@
   .mainCard .poem-decoration,
   .mainCard .vertical-calligraphy,
   .mainCard .scroll-mask,
-  .mainCard .seal-decoration.seal-small,
-  .mainCard .programmer-decoration {
+  .mainCard .seal-decoration.seal-small {
     display: none;
   }
 
   .mainCard .content {
     padding-inline: 0;
     gap: 1.2rem;
-  }
-
-  .mainCard .self-intro {
-    padding-inline: 0;
   }
 
   .mainCard .content .content-row {
@@ -1197,16 +1060,6 @@
   .mainCard .scroll-cap,
   .mainCard .scroll-tassel {
     display: none;
-  }
-}
-
-/* 尊重用户偏好：减少动态水墨插画动画 */
-@media (prefers-reduced-motion: reduce) {
-  .mainCard .programmer-svg,
-  .mainCard .programmer-screen-code,
-  .mainCard .programmer-code-symbols,
-  .mainCard .programmer-ink-splash {
-    animation: none;
   }
 }
 

@@ -353,105 +353,6 @@
     <!-- 头部区域 -->
     <Header />
 
-    <!-- 自我介绍（移至分割线上方，作为引导语） -->
-    <div class="self-intro" aria-label="自我介绍">
-      <div class="self-intro-text">
-        <p>你好，很高兴认识你</p>
-        <p>
-          我叫
-          <b>{{ config.name }}</b>
-          （<template v-if="config.age && config.age !== 'Null'">{{ config.age }}岁的 </template
-          ><b class="zodiac">{{ config.zodiac }}</b
-          >）
-        </p>
-        <p>
-          爱好是
-          <span v-for="(i, index) in config.professions" :key="index">
-            <b>{{ i }}</b>
-            <span v-if="index < config.professions.length - 1">、</span>
-          </span>
-        </p>
-      </div>
-
-      <div class="programmer-decoration" aria-hidden="true" title="程序员">
-        <svg viewBox="0 0 100 100" class="programmer-svg" preserveAspectRatio="xMidYMid meet">
-          <defs>
-            <radialGradient id="programmerInk" cx="35%" cy="30%" r="65%">
-              <stop offset="0%" style="stop-color: var(--ink-nong); stop-opacity: 0.95" />
-              <stop offset="55%" style="stop-color: var(--ink-zhong); stop-opacity: 0.7" />
-              <stop offset="100%" style="stop-color: var(--ink-qing); stop-opacity: 0.25" />
-            </radialGradient>
-            <filter id="programmerBlur">
-              <feGaussianBlur stdDeviation="0.6" />
-            </filter>
-          </defs>
-
-          <!-- 背景淡墨晕 -->
-          <ellipse
-            class="programmer-ink-splash"
-            cx="50"
-            cy="48"
-            rx="38"
-            ry="32"
-            fill="url(#programmerInk)"
-            opacity="0.15"
-            filter="url(#programmerBlur)"
-          />
-
-          <!-- 案几 -->
-          <path
-            d="M10 83 Q50 87 90 83"
-            stroke="var(--ink-zhong)"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            fill="none"
-            opacity="0.75"
-          />
-
-          <!-- 笔记本电脑 -->
-          <path
-            d="M34 83 L44 69 L44 56 Q44 51 50 51 Q56 51 56 56 L56 69 L66 83"
-            stroke="var(--ink-nong)"
-            stroke-width="2"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <g class="programmer-screen-code">
-            <path d="M47 62 L53 62" stroke="var(--ink-zhong)" stroke-width="1.4" stroke-linecap="round" opacity="0.5" />
-            <path d="M47 67 L52 67" stroke="var(--ink-zhong)" stroke-width="1.4" stroke-linecap="round" opacity="0.5" />
-          </g>
-
-          <!-- 人物 -->
-          <circle cx="50" cy="28" r="8.5" fill="var(--ink-nong)" opacity="0.75" />
-          <path
-            d="M50 37 C42 46 36 54 38 70 L62 70 C64 54 58 46 50 37"
-            fill="var(--ink-zhong)"
-            opacity="0.6"
-          />
-          <path d="M39 53 Q48 60 52 58" stroke="var(--ink-nong)" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.8" />
-          <path d="M61 53 Q52 60 48 58" stroke="var(--ink-nong)" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.8" />
-
-          <!-- 漂浮代码符号 </> -->
-          <g class="programmer-code-symbols" stroke="var(--ink-zhong)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.55">
-            <path d="M74 32 L70 36 L74 40" />
-            <path d="M82 40 L86 36 L82 32" />
-          </g>
-
-          <!-- 茶盏 -->
-          <path
-            d="M16 74 L16 70 Q16 68 18 68 L24 68 Q26 68 26 70 L26 74 Q26 78 21 78 Q16 78 16 74"
-            stroke="var(--ink-zhong)"
-            stroke-width="1.5"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            opacity="0.6"
-          />
-        </svg>
-      </div>
-    </div>
-
     <!-- 水墨笔触分割线 -->
     <div class="ink-divider" aria-hidden="true">
       <svg viewBox="0 0 800 20" class="ink-divider-svg" preserveAspectRatio="none">
@@ -551,7 +452,6 @@
 </template>
 
 <script setup>
-import config from '../config/config.json'
 import linkBtns from '../config/linkBtn.json'
 import typewriter from '../config/typewriter.json'
 import { Icon } from '@iconify/vue'
