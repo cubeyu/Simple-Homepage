@@ -6,7 +6,9 @@
     class="linkBtn"
     :style="{ '--btn-color': color }"
   >
-    <Icon :icon="icon" width="18" height="18" aria-hidden="true" />
+    <span class="link-icon-wrapper">
+      <Icon :icon="icon" class="link-icon" aria-hidden="true" />
+    </span>
     <span v-if="text">{{ text }}</span>
   </a>
 </template>
@@ -63,8 +65,19 @@ const props = defineProps({
   transition: all 0.3s ease;
 }
 
-.linkBtn .iconify {
+.link-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
   transition: all 0.3s ease;
+}
+
+.linkBtn .link-icon {
+  width: 100%;
+  height: 100%;
   color: var(--btn-color, var(--ink-dan));
 }
 
@@ -76,7 +89,11 @@ const props = defineProps({
   box-shadow: 0 2px 8px rgba(156, 44, 44, 0.1);
 }
 
-.linkBtn:hover .iconify {
+.linkBtn:hover .link-icon-wrapper {
+  transform: scale(1.08);
+}
+
+.linkBtn:hover .link-icon {
   color: var(--btn-color, var(--seal-red));
 }
 
@@ -98,6 +115,10 @@ const props = defineProps({
     padding: 0 1.2rem;
     font-size: 15px;
   }
+  .link-icon-wrapper {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 @media (min-width: 1200px) {
@@ -105,6 +126,10 @@ const props = defineProps({
     height: 44px;
     padding: 0 1.4rem;
     font-size: 15px;
+  }
+  .link-icon-wrapper {
+    width: 22px;
+    height: 22px;
   }
 }
 </style>
