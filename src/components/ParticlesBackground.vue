@@ -8,12 +8,15 @@
     <div class="clouds clouds-2"></div>
     <div class="clouds clouds-3"></div>
 
-    <!-- 飞鸟 - 极简几笔 -->
+    <!-- 飞鸟 - 极简几笔（提亮可见） -->
     <div class="birds">
       <div class="bird bird-1"></div>
       <div class="bird bird-2"></div>
       <div class="bird bird-3"></div>
     </div>
+
+    <!-- 淡墨灰日 - 天空一抹水墨圆（亮色模式） -->
+    <div class="sun"></div>
 
     <!-- 扁舟 - 远山下的一叶扁舟 -->
     <div class="boat" aria-hidden="true">
@@ -54,8 +57,8 @@
     <!-- 一枚闲章 - 左下角 -->
     <div class="seal-corner seal-bottom-left">墨</div>
 
-    <!-- 鼠标墨水涟漪层 -->
-    <div class="ink-ripple-layer" ref="rippleLayer"></div>
+    <!-- 鼠标墨水划过层（锋利笔触） -->
+    <div class="ink-trail-layer" ref="trailLayer"></div>
   </div>
 </template>
 
@@ -63,42 +66,45 @@
 import { inject, ref, onMounted, onUnmounted } from 'vue'
 
 const theme = inject('theme')
-const rippleLayer = ref(null)
+const trailLayer = ref(null)
 
 let lastX = 0
 let lastY = 0
-let lastTime = 0
+let initialized = false
 
-function createRipple(x, y) {
-  if (!rippleLayer.value) return
+// 锋利的墨水划过：沿鼠标移动方向生成一段尖头墨笔触
+function createStroke(x0, y0, x1, y1) {
+  if (!trailLayer.value) return
+  const dx = x1 - x0
+  const dy = y1 - y0
+  const dist = Math.sqrt(dx * dx + dy * dy)
+  if (dist < 2) return // 太短不画，避免静止抖动产生噪点
+
   const el = document.createElement('div')
-  el.className = 'ink-ripple'
-  el.style.left = x + 'px'
-  el.style.top = y + 'px'
-  // 随机大小变化，让涟漪更自然
-  const scale = 0.8 + Math.random() * 0.6
-  el.style.setProperty('--ripple-scale', scale)
-  rippleLayer.value.appendChild(el)
-  setTimeout(() => {
-    el.remove()
-  }, 1400)
+  el.className = 'ink-stroke'
+  const angle = (Math.atan2(dy, dx) * 180) / Math.PI
+  el.style.left = x0 + 'px'
+  el.style.top = y0 + 'px'
+  el.style.width = dist + 'px'
+  el.style.transform = `rotate(${angle}deg)`
+  // 笔触粗细与浓度略带随机，但保持锋利边缘
+  el.style.setProperty('--stroke-w', (1.5 + Math.random() * 1.5).toFixed(2) + 'px')
+  el.style.setProperty('--stroke-a', (0.4 + Math.random() * 0.2).toFixed(2))
+  trailLayer.value.appendChild(el)
+  setTimeout(() => el.remove(), 600)
 }
 
 function onMouseMove(e) {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-
-  const now = Date.now()
-  const dx = e.clientX - lastX
-  const dy = e.clientY - lastY
-  const dist = Math.sqrt(dx * dx + dy * dy)
-
-  // 节流：每移动 60px 或 120ms 生成一个涟漪
-  if (dist > 60 || now - lastTime > 120) {
-    createRipple(e.clientX, e.clientY)
+  if (!initialized) {
     lastX = e.clientX
     lastY = e.clientY
-    lastTime = now
+    initialized = true
+    return
   }
+  createStroke(lastX, lastY, e.clientX, e.clientY)
+  lastX = e.clientX
+  lastY = e.clientY
 }
 
 onMounted(() => {
@@ -189,7 +195,7 @@ onUnmounted(() => {
   left: 20%;
   width: 120px;
   height: 60px;
-  opacity: 0.08;
+  opacity: 0.4;
   animation: birdFly 80s linear infinite;
 }
 
@@ -259,10 +265,10 @@ onUnmounted(() => {
     opacity: 0;
   }
   10% {
-    opacity: 0.08;
+    opacity: 0.4;
   }
   90% {
-    opacity: 0.08;
+    opacity: 0.4;
   }
   100% {
     transform: translateX(calc(100vw + 200px)) translateY(-30px);
@@ -338,7 +344,7 @@ onUnmounted(() => {
 }
 
 :global([theme='dark']) .birds {
-  opacity: 0.1;
+  opacity: 0.45;
 }
 
 :global([theme='dark']) .boat {
@@ -466,39 +472,76 @@ onUnmounted(() => {
   opacity: 0.8;
 }
 
-/* 鼠标墨水涟漪层 */
-.ink-ripple-layer {
+/* 淡墨灰日 - 天空一抹水墨圆（亮色模式） */
+.sun {
+  position: absolute;
+  top: 13%;
+  right: 19%;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(120, 124, 130, 0.20) 0%,
+    rgba(120, 124, 130, 0.10) 58%,
+    transparent 72%
+  );
+  border: 1.5px solid rgba(86, 90, 96, 0.38);
+  opacity: 0.55;
+  animation: sunBreathe 12s ease-in-out infinite;
+}
+
+@keyframes sunBreathe {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.62;
+  }
+}
+
+/* 暗色模式不显示太阳（保留月亮） */
+:global([theme='dark']) .sun {
+  display: none;
+}
+
+/* 鼠标墨水划过层（锋利笔触） */
+.ink-trail-layer {
   position: absolute;
   inset: 0;
   pointer-events: none;
   overflow: hidden;
+  z-index: 1;
 }
 
-.ink-ripple-layer :deep(.ink-ripple) {
+.ink-trail-layer :deep(.ink-stroke) {
   position: absolute;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 1.5px solid var(--ink-zhong);
-  opacity: 0.35;
-  transform: translate(-50%, -50%) scale(0);
-  animation: inkRipple 1.2s ease-out forwards;
-  filter: blur(0.5px);
+  height: var(--stroke-w, 2px);
+  transform-origin: left center;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--ink-zhong) 40%,
+    var(--ink-zhong) 100%
+  );
+  opacity: var(--stroke-a, 0.5);
+  border-radius: 0; /* 锋利边缘，不模糊 */
+  animation: inkStrokeFade 0.6s ease-out forwards;
+  pointer-events: none;
 }
 
-@keyframes inkRipple {
+@keyframes inkStrokeFade {
   0% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0.45;
+    opacity: var(--stroke-a, 0.5);
   }
   100% {
-    transform: translate(-50%, -50%) scale(calc(5 * var(--ripple-scale, 1)));
     opacity: 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ink-ripple-layer :deep(.ink-ripple) {
+  .ink-trail-layer :deep(.ink-stroke) {
     animation: none;
   }
 }
