@@ -10,17 +10,17 @@
 </template>
 
 <script setup>
-import MainCard from "./views/MainCard.vue";
-import ParticlesBackground from './components/ParticlesBackground.vue';
-import CustomCursor from './components/CustomCursor.vue';
-import { provide } from "vue";
-import { useTheme } from './composables/useTheme';
+import MainCard from './views/MainCard.vue'
+import ParticlesBackground from './components/ParticlesBackground.vue'
+import CustomCursor from './components/CustomCursor.vue'
+import { provide } from 'vue'
+import { useTheme } from './composables/useTheme'
 
-const { theme, changeTheme, initTheme } = useTheme();
+const { theme, changeTheme, initTheme } = useTheme()
 
 // 提供主题给子组件
-provide('theme', theme);
-provide('changeTheme', changeTheme);
+provide('theme', theme)
+provide('changeTheme', changeTheme)
 </script>
 
 <style>
@@ -31,16 +31,17 @@ provide('changeTheme', changeTheme);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  cursor: none;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: var(--font-family);
   background: var(--background);
   background-color: var(--background-solid);
   background-attachment: fixed;
   color: var(--text-color);
-  transition: background 0.5s ease, color 0.3s ease;
+  transition:
+    background 0.5s ease,
+    color 0.3s ease;
   overflow-x: hidden;
   min-height: 100vh;
 }
@@ -57,7 +58,8 @@ body {
 }
 
 /* 链接和按钮的自定义光标 */
-a, button {
+a,
+button {
   position: relative;
   z-index: 10;
 }
@@ -66,10 +68,6 @@ a, button {
 @media (max-width: 768px) {
   .app {
     padding: 15px;
-  }
-  
-  * {
-    cursor: default;
   }
 }
 

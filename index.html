@@ -1,25 +1,47 @@
 <!doctype html>
 <html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- 网站icon -->
-  <link rel="shortcut icon" type="image/x-icon" href="/src/favicon.ico" />
-  <!-- 网站主页 -->
-  <link rel="canonical" href="https://techisle.top/">
-  <!-- 网站描述 -->
-  <meta name="description" content="这里是麦希屿の个人主页吖！">
-  <!-- 网站Tag -->
-  <meta name="keywords" content="cubeyu,techisle,科技岛屿,麦希屿,个人网站,个人主页">
-  <!-- 网站分享描述 -->
-  <meta name="op:description" content="麦希屿の个人主页！">
-  <title>麦希屿の小窝</title>
-</head>
+    <!-- 提前应用主题，避免刷新时亮→暗闪烁 (FOUC) -->
+    <script>
+      ;(function () {
+        try {
+          var t = localStorage.getItem('theme') || 'light'
+          document.documentElement.setAttribute('theme', t)
+        } catch (e) {}
+      })()
+    </script>
 
-<body>
-  <div id="app"></div>
-  <script type="module" src="/src/main.js"></script>
-</body>
+    <!-- 加速 Iconify 图标运行时获取 -->
+    <link rel="preconnect" href="https://api.iconify.design" crossorigin />
+    <!-- 加速 skillicons.dev 技术栈图标获取 -->
+    <link rel="preconnect" href="https://skillicons.dev" crossorigin />
+    <link rel="canonical" href="https://techisle.top/" />
 
+    <meta name="description" content="cubeyu 的水墨风格个人主页，AI原生、全栈开发者的数字空间" />
+    <meta name="keywords" content="cubeyu,个人网站,个人主页,古风水墨,AI开发,全栈开发" />
+    <meta name="author" content="cubeyu" />
+    <meta name="theme-color" content="#f5f2eb" />
+    <meta name="theme-color" content="#0a0e14" media="(prefers-color-scheme: dark)" />
+    <meta property="og:image" content="https://techisle.top/og-image.png" />
+
+    <meta property="og:title" content="cubeyu の水墨小筑" />
+    <meta property="og:description" content="cubeyu 的水墨风格个人主页" />
+    <meta property="og:url" content="https://techisle.top/" />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="cubeyu の水墨小筑" />
+    <meta name="twitter:description" content="cubeyu 的水墨风格个人主页" />
+
+    <title>cubeyu の水墨小筑</title>
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
 </html>

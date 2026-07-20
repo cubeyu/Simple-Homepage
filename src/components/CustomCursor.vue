@@ -1,189 +1,170 @@
 <template>
-  <!-- 自定义光标组件 -->
-  <div 
-    v-show="showCursor" 
-    class="custom-cursor"
-    :class="{ 'hover': isHovering, 'active': isActive }"
-    :style="{ left: cursorX + 'px', top: cursorY + 'px' }"
-    aria-hidden="true"
-  ></div>
-  <div 
-    v-show="showCursor" 
-    class="cursor-trail"
-    :class="{ 'hover': isHovering, 'active': isActive }"
-    :style="{ left: trailX + 'px', top: trailY + 'px' }"
-    aria-hidden="true"
-  ></div>
+  <div>
+    <div
+      class="custom-cursor"
+      :class="{ hover: isHovering, active: isActive }"
+      :style="{ left: cursorX + 'px', top: cursorY + 'px' }"
+    ></div>
+    <div
+      class="cursor-trail"
+      :class="{ hover: isHovering, active: isActive }"
+      :style="{ left: trailX + 'px', top: trailY + 'px' }"
+    ></div>
+  </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue'
 
-// 响应式数据
-const cursorX = ref(0);
-const cursorY = ref(0);
-const trailX = ref(0);
-const trailY = ref(0);
-const isHovering = ref(false);
-const isActive = ref(false);
-const isMobile = ref(false);
+const cursorX = ref(0)
+const cursorY = ref(0)
+const trailX = ref(0)
+const trailY = ref(0)
+const isHovering = ref(false)
+const isActive = ref(false)
 
-// 计算是否显示光标（非移动设备显示）
-const showCursor = computed(() => !isMobile.value);
+let animationFrameId = null
+let lastMoveTime = 0
 
-// 检查是否为移动设备
-const checkMobile = () => {
-  isMobile.value = window.innerWidth <= 768;
-};
-
-// 处理鼠标移动
 const handleMouseMove = (e) => {
-  cursorX.value = e.clientX;
-  cursorY.value = e.clientY;
-};
+  cursorX.value = e.clientX
+  cursorY.value = e.clientY
+  lastMoveTime = Date.now()
+  ensureTrailLoop()
+}
 
-// 处理元素悬停
-const handleMouseEnter = () => {
-  isHovering.value = true;
-};
-
-const handleMouseLeave = () => {
-  isHovering.value = false;
-};
-
-// 处理鼠标按下
 const handleMouseDown = () => {
-  isActive.value = true;
-};
+  isActive.value = true
+}
 
-// 处理鼠标释放
 const handleMouseUp = () => {
-  isActive.value = false;
-};
+  isActive.value = false
+}
 
-// 平滑更新轨迹位置
-let rafId = null;
+const HOVER_SELECTOR = 'a, button, .hover, [role="button"], input, textarea'
 
-const updateTrailPosition = () => {
-  if (showCursor.value) {
-    const dx = cursorX.value - trailX.value;
-    const dy = cursorY.value - trailY.value;
-    
-    trailX.value += dx * 0.2;
-    trailY.value += dy * 0.2;
+const handleHover = (e) => {
+  const target = e.target
+  isHovering.value = !!(
+    target &&
+    typeof target.closest === 'function' &&
+    target.closest(HOVER_SELECTOR)
+  )
+}
+
+const hasFinePointer = () => window.matchMedia && window.matchMedia('(pointer: fine)').matches
+
+const checkPrimaryInput = () => {
+  return navigator.maxTouchPoints > 0 && !hasFinePointer()
+}
+
+const animateTrail = () => {
+  trailX.value += (cursorX.value - trailX.value) * 0.15
+  trailY.value += (cursorY.value - trailY.value) * 0.15
+  animationFrameId = requestAnimationFrame(animateTrail)
+}
+
+const ensureTrailLoop = () => {
+  if (animationFrameId) return
+  const tick = () => {
+    trailX.value += (cursorX.value - trailX.value) * 0.15
+    trailY.value += (cursorY.value - trailY.value) * 0.15
+    const idle = Date.now() - lastMoveTime > 1500
+    animationFrameId = idle ? null : requestAnimationFrame(tick)
   }
-  
-  rafId = requestAnimationFrame(updateTrailPosition);
-};
+  animationFrameId = requestAnimationFrame(tick)
+}
 
-// 为可交互元素添加事件监听
-const setupInteractiveListeners = () => {
-  const interactiveElements = document.querySelectorAll('a, button, .todoItem, .techItem, .theme-toggle');
-  
-  interactiveElements.forEach(element => {
-    element.addEventListener('mouseenter', handleMouseEnter);
-    element.addEventListener('mouseleave', handleMouseLeave);
-  });
-  
-  // 返回清理函数
-  return () => {
-    interactiveElements.forEach(element => {
-      element.removeEventListener('mouseenter', handleMouseEnter);
-      element.removeEventListener('mouseleave', handleMouseLeave);
-    });
-  };
-};
-
-// 清理函数引用
-let cleanupInteractiveListeners = null;
-
-// 生命周期钩子
 onMounted(() => {
-  checkMobile();
-  
-  // 添加全局事件监听
-  window.addEventListener('resize', checkMobile);
-  document.addEventListener('mousemove', handleMouseMove);
-  document.addEventListener('mousedown', handleMouseDown);
-  document.addEventListener('mouseup', handleMouseUp);
-  
-  // 设置可交互元素的监听器
-  cleanupInteractiveListeners = setupInteractiveListeners();
-  
-  // 开始动画循环
-  updateTrailPosition();
-});
+  if (checkPrimaryInput()) {
+    return
+  }
+
+  document.body.style.cursor = 'none'
+
+  document.addEventListener('mousemove', handleMouseMove)
+  document.addEventListener('mousedown', handleMouseDown)
+  document.addEventListener('mouseup', handleMouseUp)
+  document.addEventListener('mouseover', handleHover)
+
+  animateTrail()
+})
 
 onUnmounted(() => {
-  if (rafId) {
-    cancelAnimationFrame(rafId);
+  document.body.style.cursor = ''
+
+  document.removeEventListener('mousemove', handleMouseMove)
+  document.removeEventListener('mousedown', handleMouseDown)
+  document.removeEventListener('mouseup', handleMouseUp)
+  document.removeEventListener('mouseover', handleHover)
+
+  if (animationFrameId) {
+    cancelAnimationFrame(animationFrameId)
   }
-  window.removeEventListener('resize', checkMobile);
-  document.removeEventListener('mousemove', handleMouseMove);
-  document.removeEventListener('mousedown', handleMouseDown);
-  document.removeEventListener('mouseup', handleMouseUp);
-  if (cleanupInteractiveListeners) {
-    cleanupInteractiveListeners();
-  }
-});
+})
 </script>
 
 <style scoped>
 .custom-cursor {
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--primary-color, #3b82f6);
+  width: 8px;
+  height: 8px;
+  background-color: var(--seal-red);
   border-radius: 50%;
   position: fixed;
   pointer-events: none;
   z-index: 9999;
-  mix-blend-mode: difference;
-  transition: transform 0.2s ease, background-color 0.2s ease;
   transform: translate(-50%, -50%);
-  will-change: left, top, transform;
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
+  opacity: 0.7;
 }
 
 .cursor-trail {
-  width: 8px;
-  height: 8px;
-  background-color: var(--primary-color, #3b82f6);
+  width: 4px;
+  height: 4px;
+  background-color: var(--ink-zhong);
   border-radius: 50%;
   position: fixed;
   pointer-events: none;
   z-index: 9998;
-  mix-blend-mode: difference;
-  transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
   transform: translate(-50%, -50%);
-  will-change: left, top, transform;
+  opacity: 0.4;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
-/* 悬停状态 */
+/* 悬停状态 - 淡墨扩散 */
 .custom-cursor.hover {
-  transform: translate(-50%, -50%) scale(1.5);
-  background-color: rgba(59, 130, 246, 0.1);
-  mix-blend-mode: normal;
+  transform: translate(-50%, -50%) scale(1.8);
+  opacity: 0.4;
+  background-color: var(--ink-dan);
 }
 
 .cursor-trail.hover {
   transform: translate(-50%, -50%) scale(0.5);
-  opacity: 0.5;
+  opacity: 0.2;
 }
 
-/* 点击状态 */
+/* 点击状态 - 墨点收缩 */
 .custom-cursor.active {
-  transform: translate(-50%, -50%) scale(0.8);
+  transform: translate(-50%, -50%) scale(0.7);
+  opacity: 0.9;
+  background-color: var(--seal-red);
 }
 
 .cursor-trail.active {
   transform: translate(-50%, -50%) scale(0.3);
+  opacity: 0.6;
 }
 
 /* 深色主题适配 */
 :global([theme='dark']) .custom-cursor {
-  border-color: var(--primary-color, #60a5fa);
+  background-color: var(--seal-red);
 }
 
 :global([theme='dark']) .cursor-trail {
-  background-color: var(--primary-color, #60a5fa);
+  background-color: var(--ink-zhong);
 }
 </style>

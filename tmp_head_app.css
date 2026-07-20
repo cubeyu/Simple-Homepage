@@ -1,0 +1,107 @@
+main {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 5rem 0 3rem;
+}
+
+body {
+    background: var(--background);
+    padding: 0;
+    margin: 0;
+    min-height: 100vh;
+    position: relative;
+    transition: background 0s;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+}
+
+b {
+    display: inline-block;
+    position: relative;
+    margin: 0 .2rem;
+    text-align: center;
+    z-index: 1;
+
+
+    &::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        z-index: -1;
+        opacity: .8;
+        border-radius: 4px;
+        width: 100%;
+        height: 30%;
+        background: var(--theme-color);
+        transition: .3s ease-in-out;
+    }
+
+    &:hover {
+        &::before {
+            height: 70%;
+        }
+    }
+}
+
+a {
+    text-decoration: none;
+    position: relative;
+    color: var(--theme-color);
+    transition: .3s ease-in-out;
+    padding: 0 .3rem;
+
+    &:hover {
+        color: #fff;
+
+        &::before {
+            height: 100%;
+        }
+    }
+
+    &::before {
+        content: '';
+        transition: .3s ease-in-out;
+        border-radius: 5px;
+        z-index: -1;
+        display: inline-block;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--theme-color);
+    }
+}
+
+.reThemeBtn {
+    width: 1rem;
+    height: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--card-background);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 16px;
+    border: 3px solid var(--card-border-color);
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+    user-select: none;
+    transition: .3s ease-in-out;
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    }
+}
+
+#app {
+    min-height: 100vh;
+}

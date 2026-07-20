@@ -1,60 +1,64 @@
 {
   "techStack": [
     {
-      "icon": "vscode-icons:file-type-html",
+      "icon": "html",
       "name": "HTML"
     },
     {
-      "icon": "devicon:css3",
+      "icon": "css",
       "name": "CSS"
     },
     {
-      "icon": "vscode-icons:file-type-light-js",
+      "icon": "javascript",
       "name": "JavaScript"
     },
     {
-      "icon": "catppuccin:markdown-mdx",
+      "icon": "markdown",
       "name": "Markdown"
     },
     {
-      "icon": "logos:mysql",
+      "icon": "mysql",
       "name": "MySql"
     },
     {
-      "icon": "logos:php",
+      "icon": "php",
       "name": "PHP"
     },
     {
-      "icon": "material-icon-theme:python",
+      "icon": "python",
       "name": "Python"
     },
     {
-      "icon": "material-icon-theme:vue",
+      "icon": "vue",
       "name": "Vue"
     },
     {
-      "icon": "material-icon-theme:nodejs",
+      "icon": "nodejs",
       "name": "Node.js"
     },
     {
-      "icon": "logos:nextjs",
+      "icon": "nextjs",
       "name": "Next.js"
     },
     {
-      "icon": "logos:vitejs",
+      "icon": "vite",
       "name": "Vite"
     },
     {
-      "icon": "material-icon-theme:tailwindcss",
+      "icon": "tailwind",
       "name": "Tailwind CSS"
     },
     {
-      "icon": "logos:java",
+      "icon": "java",
       "name": "Java"
     },
     {
-      "icon": "logos:jquery",
+      "icon": "jquery",
       "name": "Jquery"
+    },
+    {
+      "icon": "docker",
+      "name": "Docker"
     }
   ]
 }

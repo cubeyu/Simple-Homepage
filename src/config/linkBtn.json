@@ -2,7 +2,7 @@
   "linkBtn": [
     {
       "icon": "fa7-solid:robot",
-      "text": "AI代理",
+      "text": "知识分享",
       "color": "#ffb3b3",
       "url": "https://clawbase.cc"
     },
@@ -29,15 +29,25 @@
       "text": "今日热榜",
       "color": "#0099FF",
       "url": "https://hot.techisle.top/"
-    }
-    ,
+    },
     {
       "icon": "tabler:heart",
       "text": "支持一下",
       "color": "#FF6600",
       "url": "https://donate.techisle.top/"
-    }
-    ,
+    },
+    {
+      "icon": "tabler:user",
+      "text": "个人总览",
+      "color": "#FF6600",
+      "url": "https://bonjour.bio/cubeyu/"
+    },
+    {
+      "icon": "tabler:brand-qq",
+      "text": "君子之交",
+      "color": "#FF6600",
+      "url": "https://wpa.qq.com/msgrd?v=3&uin=3144855127"
+    },
     {
       "icon": "mingcute:check-line",
       "text": "站点监控",

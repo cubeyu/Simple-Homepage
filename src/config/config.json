@@ -1,14 +1,13 @@
 {
   "name": "麦希屿",
-  "age": "Null",
-  "zodiac": "♈️",
+  "age": "18",
+  "zodiac": "白羊",
   "avatarUrl": "https://cdn.jsdelivr.net/gh/cubeyu/cubeyu.github.io/my-avatar.png",
-  "emjoi": "😋",
   "infoTags": {
     "sex": "男",
-    "company": "ClawBase",
-    "province": "China",
+    "company": "科技岛屿",
+    "province": "中国",
     "github": "cubeyu"
   },
-  "professions": ["AI训练师", "全栈攻城狮", "桌面运维"]
+  "professions": [ "全栈攻城狮", "AI应用开发者"]
 }

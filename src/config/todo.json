@@ -1,16 +1,16 @@
 {
   "todoList": [
     {
-      "text": "ClawBase",
+      "text": "ClawBase开发",
       "checked": false
     },
     {
-      "text": "Vibe Coding",
-      "checked": true
+      "text": "AI原生",
+      "checked": false
     },
     {
       "text": "掌握更多技能",
-      "checked": false
+      "checked": true
     },
     {
       "text": "重构个人主页",

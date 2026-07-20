@@ -1,687 +1,538 @@
 <template>
-  <div class="mainCard animate-float">
-    <div class="header">
-      <div class="avatar" :emoji="config.emjoi" @mouseenter="avatarHovered = true" @mouseleave="avatarHovered = false">
-        <img 
-          :src="avatarSrc" 
-          alt="头像" 
-          :class="{ 'avatar-zoom': avatarHovered }" 
-          @error="handleAvatarError"
+  <div class="mainCard" role="main">
+    <!-- 顶部卷轴杆（共享渐变/滤镜定义） -->
+    <div class="scroll-rod scroll-top" aria-hidden="true">
+      <svg viewBox="0 0 800 30" class="scroll-rod-svg" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="scrollRodGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color: var(--ink-qing); stop-opacity: 0.3" />
+            <stop offset="20%" style="stop-color: var(--ink-dan); stop-opacity: 0.6" />
+            <stop offset="50%" style="stop-color: var(--ink-zhong); stop-opacity: 0.8" />
+            <stop offset="80%" style="stop-color: var(--ink-dan); stop-opacity: 0.5" />
+            <stop offset="100%" style="stop-color: var(--ink-qing); stop-opacity: 0.25" />
+          </linearGradient>
+          <linearGradient id="scrollRodHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color: var(--ink-qing); stop-opacity: 0" />
+            <stop offset="30%" style="stop-color: var(--ink-dan); stop-opacity: 0.2" />
+            <stop offset="50%" style="stop-color: var(--ink-zhong); stop-opacity: 0.1" />
+            <stop offset="100%" style="stop-color: var(--ink-qing); stop-opacity: 0" />
+          </linearGradient>
+          <filter id="scrollRodBlur">
+            <feGaussianBlur stdDeviation="0.5" />
+          </filter>
+        </defs>
+        <rect x="0" y="8" width="800" height="14" rx="7" fill="url(#scrollRodGrad)" opacity="0.7" />
+        <rect
+          x="0"
+          y="10"
+          width="800"
+          height="4"
+          rx="2"
+          fill="url(#scrollRodHighlight)"
+          opacity="0.5"
         />
+      </svg>
+      <div class="scroll-cap scroll-cap-left">
+        <svg viewBox="0 0 30 40" class="scroll-cap-svg">
+          <defs>
+            <linearGradient id="capGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color: var(--ink-zhong); stop-opacity: 0.7" />
+              <stop offset="30%" style="stop-color: var(--ink-nong); stop-opacity: 0.9" />
+              <stop offset="70%" style="stop-color: var(--ink-zhong); stop-opacity: 0.8" />
+              <stop offset="100%" style="stop-color: var(--ink-qing); stop-opacity: 0.5" />
+            </linearGradient>
+            <radialGradient id="capSealGrad" cx="30%" cy="30%" r="70%">
+              <stop offset="0%" style="stop-color: var(--seal-red-light); stop-opacity: 0.9" />
+              <stop offset="60%" style="stop-color: var(--seal-red); stop-opacity: 0.8" />
+              <stop offset="100%" style="stop-color: var(--seal-red); stop-opacity: 0.6" />
+            </radialGradient>
+          </defs>
+          <ellipse cx="15" cy="20" rx="12" ry="16" fill="url(#capGrad)" opacity="0.8" />
+          <ellipse cx="15" cy="20" rx="8" ry="11" fill="url(#capSealGrad)" opacity="0.7" />
+          <ellipse cx="12" cy="16" rx="3" ry="4" fill="var(--seal-red-light)" opacity="0.4" />
+        </svg>
       </div>
-      
-      <!-- 主题切换按钮 - 滑块式设计 -->
-      <div class="theme-toggle" @click="changeTheme">
-        <div class="toggle-container">
-          <div class="toggle-bg" :class="{ 'active': theme === 'dark' }">
-            <!-- 太阳 -->
-            <div class="sun"></div>
-            
-            <!-- 月亮 -->
-            <div class="moon"></div>
-            
-            <!-- 星星 -->
-            <div class="stars">
-              <div class="star"></div>
-              <div class="star"></div>
-              <div class="star"></div>
-            </div>
-            
-            <!-- 云朵 -->
-            <div class="clouds">
-              <div class="cloud"></div>
-              <div class="cloud"></div>
-            </div>
-            
-            <!-- 滑块 -->
-            <div class="toggle-handle" :class="{ 'active': theme === 'dark' }"></div>
-          </div>
+      <div class="scroll-cap scroll-cap-right">
+        <svg viewBox="0 0 30 40" class="scroll-cap-svg">
+          <ellipse cx="15" cy="20" rx="12" ry="16" fill="url(#capGrad)" opacity="0.8" />
+          <ellipse cx="15" cy="20" rx="8" ry="11" fill="url(#capSealGrad)" opacity="0.7" />
+          <ellipse cx="18" cy="16" rx="3" ry="4" fill="var(--seal-red-light)" opacity="0.4" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- 底部卷轴杆（复用顶部定义，避免重复 ID） -->
+    <div class="scroll-rod scroll-bottom" aria-hidden="true">
+      <svg viewBox="0 0 800 30" class="scroll-rod-svg" preserveAspectRatio="none">
+        <use href="#scrollRodGrad" aria-hidden="true" />
+        <use href="#scrollRodHighlight" aria-hidden="true" />
+        <rect x="0" y="8" width="800" height="14" rx="7" fill="url(#scrollRodGrad)" opacity="0.7" />
+        <rect
+          x="0"
+          y="16"
+          width="800"
+          height="4"
+          rx="2"
+          fill="url(#scrollRodHighlight)"
+          opacity="0.4"
+        />
+      </svg>
+      <div class="scroll-cap scroll-cap-left">
+        <svg viewBox="0 0 30 40" class="scroll-cap-svg">
+          <ellipse cx="15" cy="20" rx="12" ry="16" fill="url(#capGrad)" opacity="0.8" />
+          <ellipse cx="15" cy="20" rx="8" ry="11" fill="url(#capSealGrad)" opacity="0.7" />
+          <ellipse cx="12" cy="16" rx="3" ry="4" fill="var(--seal-red-light)" opacity="0.4" />
+        </svg>
+        <div class="scroll-tassel">
+          <span class="tassel-string tassel-1"></span>
+          <span class="tassel-string tassel-2"></span>
+          <span class="tassel-string tassel-3"></span>
+          <span class="tassel-string tassel-4"></span>
+          <span class="tassel-string tassel-5"></span>
         </div>
       </div>
-
-      <div class="sayHi">
-        <h1>
-          Hi, I'm
-          <span class="name" :data-text="config.name">
-            {{ config.name }}
-          </span>
-        </h1>
-
-        <div class="infoTags">
-          <div v-if="config.infoTags.sex === '男'" class="tag hover">
-            <Icon icon="ep:user" width="16" height="16" class="tag-icon" />
-            <span class="boy"> ♂ </span>
-          </div>
-          <div v-else-if="config.infoTags.sex === '女'" class="tag hover">
-            <Icon icon="ep:user" width="16" height="16" class="tag-icon" />
-            <span class="girl"> ♀ </span>
-          </div>
-          <div v-else class="tag hover">
-            <Icon icon="ep:user" width="16" height="16" class="tag-icon" />
-            {{ config.infoTags.sex }}
-          </div>
-          <div class="tag hover">
-            <Icon icon="ep:location" width="16" height="16" class="tag-icon" />
-            {{ config.infoTags.province }}
-          </div>
-          <div class="tag hover">
-            <Icon icon="ep:school" width="16" height="16" class="tag-icon" />
-            {{ config.infoTags.company }}
-          </div>
-          <div class="tag hover">
-            <Icon icon="ep:chat-square" width="16" height="16" class="tag-icon" />
-            {{ config.infoTags.github }}
-          </div>
+      <div class="scroll-cap scroll-cap-right">
+        <svg viewBox="0 0 30 40" class="scroll-cap-svg">
+          <ellipse cx="15" cy="20" rx="12" ry="16" fill="url(#capGradRight)" opacity="0.8" />
+          <ellipse cx="15" cy="20" rx="8" ry="11" fill="url(#capSealGrad)" opacity="0.7" />
+          <ellipse cx="18" cy="16" rx="3" ry="4" fill="var(--seal-red-light)" opacity="0.4" />
+        </svg>
+        <div class="scroll-tassel">
+          <span class="tassel-string tassel-1"></span>
+          <span class="tassel-string tassel-2"></span>
+          <span class="tassel-string tassel-3"></span>
+          <span class="tassel-string tassel-4"></span>
+          <span class="tassel-string tassel-5"></span>
         </div>
       </div>
     </div>
 
+    <!-- 卷轴展开遮罩 -->
+    <div class="scroll-mask" aria-hidden="true"></div>
+
+    <!-- 鼠标墨迹拖尾容器 -->
+    <div class="ink-trail-container" ref="inkTrailRef" aria-hidden="true"></div>
+
+    <!-- 四角墨渍装饰 -->
+    <div class="ink-corner ink-top-left"></div>
+    <div class="ink-corner ink-top-right"></div>
+    <div class="ink-corner ink-bottom-left"></div>
+    <div class="ink-corner ink-bottom-right"></div>
+
+    <!-- 墨迹装饰 -->
+    <div class="ink-decoration"></div>
+    <!-- 印章装饰 -->
+    <div class="seal-decoration">墨</div>
+
+    <!-- 左侧竖排诗词背景装饰 -->
+    <div class="poem-decoration poem-left" aria-hidden="true">
+      <span>山不在高有仙则名</span>
+    </div>
+
+    <!-- 右侧竖排诗词背景装饰 -->
+    <div class="poem-decoration poem-right" aria-hidden="true">
+      <span>水不在深有龙则灵</span>
+    </div>
+
+    <!-- 左下角圆形闲章 -->
+    <div class="seal-decoration seal-round">闲</div>
+
+    <!-- 标题下方小印章 -->
+    <div class="seal-decoration seal-small">cubeyu</div>
+
+    <!-- 左侧斜靠的剑 -->
+    <div class="sword-decoration" aria-hidden="true">
+      <svg viewBox="0 0 80 240" class="sword-svg">
+        <defs>
+          <linearGradient id="swordBladeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color: var(--ink-qing); stop-opacity: 0" />
+            <stop offset="10%" style="stop-color: var(--ink-dan); stop-opacity: 0.7" />
+            <stop offset="30%" style="stop-color: var(--ink-zhong); stop-opacity: 0.9" />
+            <stop offset="50%" style="stop-color: var(--ink-nong); stop-opacity: 1" />
+            <stop offset="70%" style="stop-color: var(--ink-zhong); stop-opacity: 0.85" />
+            <stop offset="90%" style="stop-color: var(--ink-dan); stop-opacity: 0.5" />
+            <stop offset="100%" style="stop-color: var(--ink-qing); stop-opacity: 0" />
+          </linearGradient>
+          <filter id="swordBlur">
+            <feGaussianBlur stdDeviation="0.8" />
+          </filter>
+          <filter id="swordBlur2">
+            <feGaussianBlur stdDeviation="2" />
+          </filter>
+        </defs>
+        <path
+          d="M40 8 Q38 40 41 80 Q43 120 39 140"
+          stroke="url(#swordBladeGrad)"
+          stroke-width="5"
+          fill="none"
+          stroke-linecap="round"
+          filter="url(#swordBlur2)"
+          opacity="0.3"
+        />
+        <path
+          d="M40 10 Q39 50 41 100 Q42 125 38 142"
+          stroke="url(#swordBladeGrad)"
+          stroke-width="3"
+          fill="none"
+          stroke-linecap="round"
+        />
+        <path
+          d="M40 12 Q40 60 40 110 Q40 130 39 145"
+          stroke="var(--ink-jiao)"
+          stroke-width="1"
+          fill="none"
+          stroke-linecap="round"
+          opacity="0.6"
+          stroke-dasharray="3 8 2 6 1 10"
+        />
+        <path
+          d="M32 145 L48 145"
+          stroke="var(--ink-zhong)"
+          stroke-width="2.5"
+          fill="none"
+          stroke-linecap="round"
+          opacity="0.7"
+        />
+        <path
+          d="M38 148 Q37 170 39 190"
+          stroke="var(--ink-dan)"
+          stroke-width="2"
+          fill="none"
+          stroke-linecap="round"
+          opacity="0.5"
+        />
+        <path
+          d="M39 192 Q37 205 35 215 Q40 210 42 218 Q44 210 40 215"
+          stroke="var(--seal-red)"
+          stroke-width="1.5"
+          fill="none"
+          stroke-linecap="round"
+          opacity="0.6"
+        />
+        <circle
+          cx="37"
+          cy="220"
+          r="4"
+          fill="var(--seal-red)"
+          opacity="0.3"
+          filter="url(#swordBlur2)"
+        />
+      </svg>
+    </div>
+
+    <!-- 右侧毛笔 -->
+    <div class="brush-decoration" aria-hidden="true">
+      <svg viewBox="0 0 80 260" class="brush-svg">
+        <defs>
+          <linearGradient id="brushHandleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color: var(--ink-qing); stop-opacity: 0" />
+            <stop offset="15%" style="stop-color: var(--ink-dan); stop-opacity: 0.6" />
+            <stop offset="50%" style="stop-color: var(--ink-zhong); stop-opacity: 0.8" />
+            <stop offset="85%" style="stop-color: var(--ink-dan); stop-opacity: 0.5" />
+            <stop offset="100%" style="stop-color: var(--ink-qing); stop-opacity: 0" />
+          </linearGradient>
+          <linearGradient id="brushBristleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color: var(--ink-zhong); stop-opacity: 0.9" />
+            <stop offset="30%" style="stop-color: var(--ink-nong); stop-opacity: 1" />
+            <stop offset="60%" style="stop-color: var(--ink-zhong); stop-opacity: 0.7" />
+            <stop offset="100%" style="stop-color: var(--ink-qing); stop-opacity: 0" />
+          </linearGradient>
+          <filter id="brushBlur">
+            <feGaussianBlur stdDeviation="1" />
+          </filter>
+          <filter id="brushBlur2">
+            <feGaussianBlur stdDeviation="3" />
+          </filter>
+        </defs>
+        <path
+          d="M40 5 Q41 50 39 100 Q38 120 41 130"
+          stroke="url(#brushHandleGrad)"
+          stroke-width="6"
+          fill="none"
+          stroke-linecap="round"
+          filter="url(#brushBlur2)"
+          opacity="0.25"
+        />
+        <path
+          d="M40 8 Q40 60 39 110 Q39 125 41 132"
+          stroke="url(#brushHandleGrad)"
+          stroke-width="3.5"
+          fill="none"
+          stroke-linecap="round"
+        />
+        <path
+          d="M40 10 Q40 70 40 115 Q40 128 40 134"
+          stroke="var(--ink-jiao)"
+          stroke-width="1"
+          fill="none"
+          stroke-linecap="round"
+          opacity="0.5"
+          stroke-dasharray="2 6 1 8 3 5"
+        />
+        <path
+          d="M34 133 L46 133"
+          stroke="var(--ink-zhong)"
+          stroke-width="2"
+          fill="none"
+          stroke-linecap="round"
+          opacity="0.6"
+        />
+        <path
+          d="M36 135 Q34 170 32 200"
+          stroke="url(#brushBristleGrad)"
+          stroke-width="3"
+          fill="none"
+          stroke-linecap="round"
+          opacity="0.7"
+        />
+        <path
+          d="M40 135 Q40 175 38 210"
+          stroke="url(#brushBristleGrad)"
+          stroke-width="4"
+          fill="none"
+          stroke-linecap="round"
+          opacity="0.85"
+        />
+        <path
+          d="M44 135 Q46 170 48 195"
+          stroke="url(#brushBristleGrad)"
+          stroke-width="2.5"
+          fill="none"
+          stroke-linecap="round"
+          opacity="0.6"
+        />
+        <path
+          d="M33 150 Q31 180 30 205"
+          stroke="var(--ink-dan)"
+          stroke-width="1.5"
+          fill="none"
+          stroke-linecap="round"
+          opacity="0.4"
+        />
+        <path
+          d="M47 145 Q49 175 50 190"
+          stroke="var(--ink-dan)"
+          stroke-width="1.5"
+          fill="none"
+          stroke-linecap="round"
+          opacity="0.4"
+        />
+        <ellipse
+          cx="40"
+          cy="180"
+          rx="15"
+          ry="25"
+          fill="var(--ink-zhong)"
+          opacity="0.1"
+          filter="url(#brushBlur2)"
+        />
+      </svg>
+    </div>
+
+    <!-- 左下角竹叶 -->
+    <div class="bamboo-decoration bamboo-left" aria-hidden="true">
+      <div class="bamboo-stem"></div>
+      <div class="bamboo-leaf leaf-1"></div>
+      <div class="bamboo-leaf leaf-2"></div>
+      <div class="bamboo-leaf leaf-3"></div>
+    </div>
+
+    <!-- 右下角梅花 -->
+    <div class="plum-decoration plum-right" aria-hidden="true">
+      <div class="plum-branch branch-1"></div>
+      <div class="plum-branch branch-2"></div>
+      <div class="plum-flower flower-1"></div>
+      <div class="plum-flower flower-2"></div>
+      <div class="plum-flower flower-3"></div>
+    </div>
+
+    <!-- 右侧竖排题跋 -->
+    <div class="vertical-calligraphy" aria-hidden="true">
+      <span class="calligraphy-text">水墨小筑</span>
+      <span class="calligraphy-seal">墨</span>
+    </div>
+
+    <!-- 头部区域 -->
+    <Header />
+
+    <!-- 水墨笔触分割线 -->
+    <div class="ink-divider" aria-hidden="true">
+      <svg viewBox="0 0 800 20" class="ink-divider-svg" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="inkDividerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color: var(--ink-qing); stop-opacity: 0" />
+            <stop offset="15%" style="stop-color: var(--ink-dan); stop-opacity: 0.3" />
+            <stop offset="40%" style="stop-color: var(--ink-zhong); stop-opacity: 0.5" />
+            <stop offset="50%" style="stop-color: var(--ink-nong); stop-opacity: 0.6" />
+            <stop offset="60%" style="stop-color: var(--ink-zhong); stop-opacity: 0.5" />
+            <stop offset="85%" style="stop-color: var(--ink-dan); stop-opacity: 0.3" />
+            <stop offset="100%" style="stop-color: var(--ink-qing); stop-opacity: 0" />
+          </linearGradient>
+          <filter id="inkDividerBlur">
+            <feGaussianBlur stdDeviation="0.8" />
+          </filter>
+        </defs>
+        <path
+          d="M120 10 Q200 8 400 10 Q600 12 680 10"
+          stroke="url(#inkDividerGrad)"
+          stroke-width="2"
+          fill="none"
+          stroke-linecap="round"
+          filter="url(#inkDividerBlur)"
+          opacity="0.7"
+        />
+        <path
+          d="M150 11 Q250 9 350 11 Q450 13 550 11 Q620 9 650 11"
+          stroke="url(#inkDividerGrad)"
+          stroke-width="0.8"
+          fill="none"
+          stroke-linecap="round"
+          opacity="0.4"
+          stroke-dasharray="8 4 2 6 3 5"
+        />
+        <circle
+          cx="400"
+          cy="10"
+          r="1.5"
+          fill="var(--ink-zhong)"
+          opacity="0.3"
+          filter="url(#inkDividerBlur)"
+        />
+      </svg>
+    </div>
+
+    <!-- 内容区域 -->
     <div class="content">
-      <div class="leftBox">
-        <!-- todo -->
-        <div class="card">
-          <span class="cardHeader">我的一些鸽子计划📃</span>
-          <div class="cardMain">
-            <div class="todoList">
-              <div
-                class="todoItem"
-                v-for="(i, index) in todo.todoList"
-                :key="index"
-              >
-                <Icon
-                  :icon="i.checked ? 'lets-icons:check-ring' : 'gg:radio-check'"
-                  width="24"
-                  height="24"
-                />
-                <span v-if="i.checked">
-                  <del>{{ i.text }}</del>
-                </span>
-                <span v-else>
-                  {{ i.text }}
-                </span>
-              </div>
-            </div>
-          </div>
+      <div class="content-row">
+        <div class="leftBox">
+          <TodoList />
         </div>
 
-        <!-- 时间显示 -->
-        <div class="card">
-          <div class="time-progress">
-            <h3>时光⌛</h3>
-            <div class="progress-item">
-              <p>☀️今天已经过去了 {{ hoursPassed }} / 24 小时</p>
-              <div class="progress-bar">
-                <div
-                  class="progress-fill"
-                  :style="{ width: hoursProgress + '%' }"
-                ></div>
-              </div>
-            </div>
-
-            <div class="progress-item">
-              <p>📆本周已经过去了 {{ daysInWeekPassed }} / 7 天</p>
-              <div class="progress-bar">
-                <div
-                  class="progress-fill"
-                  :style="{ width: weekProgress + '%' }"
-                ></div>
-              </div>
-            </div>
-
-            <div class="progress-item">
-              <p>
-                🌙本月已经过去了 {{ daysInMonthPassed }} /
-                {{ daysInCurrentMonth }} 天
-              </p>
-              <div class="progress-bar">
-                <div
-                  class="progress-fill"
-                  :style="{ width: monthProgress + '%' }"
-                ></div>
-              </div>
-            </div>
-
-            <div class="progress-item">
-              <p>
-                ⭐今年已经过去了 {{ daysInYearPassed }} /
-                {{ daysInCurrentYear }} 天
-              </p>
-              <div class="progress-bar">
-                <div
-                  class="progress-fill"
-                  :style="{ width: yearProgress + '%' }"
-                ></div>
-              </div>
-            </div>
+        <div class="rightBox">
+          <div class="card">
+            <p>你好，很高兴认识你</p>
+            <p>
+              我叫
+              <b>{{ config.name }}</b>
+              （<template v-if="config.age && config.age !== 'Null'">{{ config.age }}岁的 </template
+              ><b class="zodiac">{{ config.zodiac }}</b
+              >）
+            </p>
+            <p>
+              是一名
+              <span v-for="(i, index) in config.professions" :key="index">
+                <b>{{ i }}</b>
+                <span v-if="index < config.professions.length - 1">、</span>
+              </span>
+            </p>
+            <TechStack />
           </div>
         </div>
       </div>
 
-      <div class="rightBox">
-        <div class="card">
-          <p>你好鸭，很高兴认识你👋</p>
-          <p>
-            我叫
-            <b>{{ config.name }}</b>
-            （ {{ config.age }}年的 <b class="zodiac">{{ config.zodiac }}</b> ）
-          </p>
-          <p>
-            是一名
-            <span v-for="(i, index) in config.professions" :key="index">
-              <b>{{ i }}</b>
-              <span v-if="index < config.professions.length - 1">、</span>
-            </span>
-          </p>
+      <div class="typew card">
+        <Icon icon="carbon:quotes" width="16" height="16" aria-hidden="true" />
+        <Typewriter :text="typewriter" />
+        <Icon icon="ph:quotes-fill" width="16" height="16" aria-hidden="true" />
+      </div>
 
-          <!-- 技术栈 -->
-          <h3>我的一些技术栈🫡</h3>
-          <div class="techStack">
-            <div
-              v-for="(i, index) in techStack.techStack"
+      <div class="content-row">
+        <div class="leftBox">
+          <TimeProgress />
+        </div>
+
+        <div class="rightBox">
+          <nav class="linkBox card" aria-label="社交链接">
+            <link-btn
+              v-for="(i, index) in linkBtns.linkBtn.slice(0, 12)"
               :key="index"
-              class="techItem"
-              :data-name="i.name"
-            >
-              <Icon :icon="i.icon" width="40" height="40" />
-            </div>
-          </div>
-        </div>
-
-        <div class="typew card">
-          <Icon icon="carbon:quotes" width="16" height="16" />
-          <Typewriter :text="typewriter" />
-          <Icon icon="ph:quotes-fill" width="16" height="16" />
-        </div>
-
-        <!-- 外链按钮 -->
-        <div class="linkBox card">
-          <link-btn
-            v-for="(i, index) in linkBtns.linkBtn"
-            :key="index"
-            :icon="i.icon"
-            :text="i.text"
-            :color="i.color"
-            :url="i.url"
-          ></link-btn>
+              :icon="i.icon"
+              :text="i.text"
+              :color="i.color"
+              :url="i.url"
+            ></link-btn>
+          </nav>
         </div>
       </div>
     </div>
 
-    <div class="footer">
-      <p>
-        ©2026 cubeyu
-      </p>
-    </div>
+    <footer class="footer">
+      <div class="footer-content">
+        <span class="footer-seal">墨</span>
+        <p class="footer-text">©2026 cubeyu · 水墨小筑</p>
+      </div>
+    </footer>
   </div>
 </template>
 
 <script setup>
-import config from "../config/config.json";
-import linkBtns from "../config/linkBtn.json";
-import techStack from "../config/techStack.json";
-import todo from "../config/todo.json";
-import typewriter from "../config/typewriter.json";
-import { Icon } from "@iconify/vue";
-import LinkBtn from "../components/LinkBtn.vue";
-import { onMounted, onUnmounted, ref, computed, inject } from "vue";
-import Typewriter from "../components/Typewriter.vue";
+import config from '../config/config.json'
+import linkBtns from '../config/linkBtn.json'
+import typewriter from '../config/typewriter.json'
+import { Icon } from '@iconify/vue'
+import LinkBtn from '../components/LinkBtn.vue'
+import Typewriter from '../components/Typewriter.vue'
+import Header from '../components/Header.vue'
+import TodoList from '../components/TodoList.vue'
+import TechStack from '../components/TechStack.vue'
+import TimeProgress from '../components/TimeProgress.vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
-const now = ref(new Date());
+const inkTrailRef = ref(null)
+let lastInkTime = 0
+const INK_INTERVAL = 80
+const prefersReducedMotion =
+  typeof window !== 'undefined' &&
+  window.matchMedia &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-// 从父组件注入主题
-const theme = inject('theme');
-const changeTheme = inject('changeTheme');
+const createInkDot = (x, y) => {
+  if (!inkTrailRef.value) return
 
-// 交互状态
-const avatarHovered = ref(false);
+  const dot = document.createElement('div')
+  dot.className = 'ink-dot'
 
-// 头像加载兜底
-const avatarSrc = ref(config.avatarUrl);
-const handleAvatarError = () => {
-  // CDN 不可用时使用本地 favicon 作为备用
-  avatarSrc.value = '/favicon.ico';
-};
+  const size = 6 + Math.random() * 10
+  dot.style.width = size + 'px'
+  dot.style.height = size + 'px'
+  dot.style.left = x - size / 2 + 'px'
+  dot.style.top = y - size / 2 + 'px'
 
-// 进度数据（添加动画效果）
-const hoursPassed = computed(() => now.value.getHours());
-const hoursProgress = computed(() =>
-  ((hoursPassed.value / 24) * 100).toFixed(2)
-);
+  dot.style.opacity = 0.15 + Math.random() * 0.2
 
-const daysInWeekPassed = computed(() => {
-  const day = now.value.getDay();
-  return day === 0 ? 7 : day;
-});
-const weekProgress = computed(() =>
-  ((daysInWeekPassed.value / 7) * 100).toFixed(2)
-);
+  inkTrailRef.value.appendChild(dot)
 
-const daysInMonthPassed = computed(() => now.value.getDate());
-const daysInCurrentMonth = computed(() =>
-  new Date(now.value.getFullYear(), now.value.getMonth() + 1, 0).getDate()
-);
-const monthProgress = computed(
-  () => (daysInMonthPassed.value / daysInCurrentMonth.value) * 100
-);
-
-const daysInYearPassed = computed(() => {
-  const startOfYear = new Date(now.value.getFullYear(), 0, 1);
-  const diff = now.value - startOfYear;
-  return Math.ceil(diff / (1000 * 60 * 60 * 24));
-});
-
-const daysInCurrentYear = computed(() => {
-  const isLeap = isLeapYear(now.value.getFullYear());
-  return isLeap ? 366 : 365;
-});
-
-const yearProgress = computed(
-  () => (daysInYearPassed.value / daysInCurrentYear.value) * 100
-);
-
-function isLeapYear(year) {
-  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+  setTimeout(() => {
+    if (dot.parentNode) {
+      dot.parentNode.removeChild(dot)
+    }
+  }, 1500)
 }
 
-// 存储定时器ID用于清理
-let timeIntervalId = null;
+const handleMouseMove = (e) => {
+  if (prefersReducedMotion) return
+  const now = Date.now()
+  if (now - lastInkTime < INK_INTERVAL) return
+  lastInkTime = now
+
+  if (!inkTrailRef.value) return
+
+  const rect = inkTrailRef.value.getBoundingClientRect()
+  const x = e.clientX - rect.left
+  const y = e.clientY - rect.top
+
+  createInkDot(x, y)
+}
 
 onMounted(() => {
-  timeIntervalId = setInterval(() => {
-    now.value = new Date();
-  }, 1000);
-});
+  if (inkTrailRef.value) {
+    inkTrailRef.value.addEventListener('mousemove', handleMouseMove)
+  }
+})
 
 onUnmounted(() => {
-  if (timeIntervalId) {
-    clearInterval(timeIntervalId);
+  if (inkTrailRef.value) {
+    inkTrailRef.value.removeEventListener('mousemove', handleMouseMove)
   }
-});
+})
 </script>
-
-<style>
-@import url(../assets/css/MainCard.css);
-
-/* 主题切换按钮 - 滑块式设计 */
-.header {
-  position: relative;
-}
-
-.theme-toggle {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-  padding: 5px;
-  transition: all 0.3s ease;
-  border-radius: 50px;
-}
-
-.theme-toggle:hover {
-  transform: scale(1.05);
-}
-
-.toggle-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.toggle-bg {
-  position: relative;
-  width: 60px;
-  height: 32px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, #ffdd77, #ffbb55);
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-  box-shadow: 
-    0 4px 15px rgba(255, 221, 119, 0.3),
-    inset 0 2px 5px rgba(255, 255, 255, 0.3),
-    inset 0 -2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.toggle-bg.active {
-  background: linear-gradient(135deg, #2c3e50, #34495e);
-  box-shadow: 
-    0 4px 15px rgba(44, 62, 80, 0.3),
-    inset 0 2px 5px rgba(255, 255, 255, 0.05),
-    inset 0 -2px 5px rgba(0, 0, 0, 0.3);
-}
-
-/* 太阳 */
-.sun {
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #ffd700;
-  box-shadow: 0 0 15px #ffd700;
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  opacity: 1;
-}
-
-.toggle-bg.active .sun {
-  transform: translateX(28px) scale(0.6);
-  opacity: 0.3;
-}
-
-/* 月亮 */
-.moon {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: transparent;
-  border: 3px solid #e0e0e0;
-  transform: translateX(28px) scale(0.6);
-  opacity: 0;
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.toggle-bg.active .moon {
-  transform: translateX(0) scale(1);
-  opacity: 1;
-  box-shadow: 0 0 10px rgba(224, 224, 224, 0.6);
-}
-
-/* 星星 */
-.stars {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-
-.toggle-bg.active .stars {
-  opacity: 1;
-}
-
-.star {
-  position: absolute;
-  background: #ffffff;
-  border-radius: 50%;
-  animation: twinkle 2s infinite ease-in-out;
-}
-
-.star:nth-child(1) {
-  width: 2px;
-  height: 2px;
-  top: 8px;
-  right: 18px;
-  animation-delay: 0s;
-}
-
-.star:nth-child(2) {
-  width: 1.5px;
-  height: 1.5px;
-  top: 15px;
-  right: 25px;
-  animation-delay: 0.5s;
-}
-
-.star:nth-child(3) {
-  width: 1px;
-  height: 1px;
-  top: 20px;
-  right: 12px;
-  animation-delay: 1s;
-}
-
-@keyframes twinkle {
-  0%, 100% {
-    opacity: 0.4;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-}
-
-/* 云朵 */
-.clouds {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0.7;
-  transition: opacity 0.6s ease;
-}
-
-.toggle-bg.active .clouds {
-  opacity: 0;
-}
-
-.cloud {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 10px;
-  animation: float 8s infinite ease-in-out;
-}
-
-.cloud:nth-child(1) {
-  width: 10px;
-  height: 5px;
-  top: 10px;
-  left: 35px;
-  animation-delay: 0s;
-}
-
-.cloud:nth-child(2) {
-  width: 12px;
-  height: 6px;
-  top: 8px;
-  left: 50px;
-  animation-delay: 2s;
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateX(0) translateY(0);
-  }
-  50% {
-    transform: translateX(-5px) translateY(-2px);
-  }
-}
-
-/* 滑块 */
-.toggle-handle {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: white;
-  box-shadow: 
-    0 2px 5px rgba(0, 0, 0, 0.2),
-    0 0 10px rgba(255, 255, 255, 0.5);
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 10;
-}
-
-.toggle-handle.active {
-  transform: translateX(28px);
-  background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .theme-toggle {
-    top: 8px;
-    right: 8px;
-  }
-  
-  .toggle-bg {
-    width: 56px;
-    height: 30px;
-  }
-  
-  .toggle-handle {
-    width: 24px;
-    height: 24px;
-  }
-  
-  .toggle-handle.active {
-    transform: translateX(26px);
-  }
-  
-  .sun, .moon {
-    width: 22px;
-    height: 22px;
-  }
-}
-
-@media (max-width: 480px) {
-  .theme-toggle {
-    top: 5px;
-    right: 5px;
-  }
-  
-  .toggle-bg {
-    width: 52px;
-    height: 28px;
-  }
-  
-  .toggle-handle {
-    width: 22px;
-    height: 22px;
-  }
-  
-  .toggle-handle.active {
-    transform: translateX(24px);
-  }
-}
-
-/* 增强动画效果 */
-.mainCard {
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.mainCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-  will-change: transform;
-}
-
-@keyframes float {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
-
-.avatar {
-  transition: all 0.3s ease;
-}
-
-.avatar:hover {
-  transform: scale(1.05) rotate(2deg);
-}
-
-.avatar img {
-  transition: transform 0.5s ease;
-}
-
-.avatar-zoom {
-  transform: scale(1.1);
-}
-
-.todoItem {
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.todoItem:hover {
-  transform: translateX(8px) scale(1.02);
-  background-color: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-}
-
-.tag.hover {
-  transition: all 0.3s ease;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.tag.hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  background-color: rgba(255, 255, 255, 0.9);
-}
-
-.progress-fill {
-  transition: width 1s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.progress-fill::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  animation: shimmer 2s infinite;
-}
-
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-}
-
-.techItem {
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.techItem:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-}
-
-.techItem:hover .iconify {
-  transform: scale(1.2) rotate(5deg);
-}
-
-/* 响应式优化 */
-@media (max-width: 768px) {
-  .mainCard:hover {
-    transform: translateY(-3px);
-  }
-  
-  .todoItem:hover,
-  .techItem:hover {
-    transform: none;
-  }
-}
-</style>

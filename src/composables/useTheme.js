@@ -1,31 +1,25 @@
-import { ref, readonly, onMounted } from 'vue';
+import { ref, readonly, onMounted } from 'vue'
 
-const theme = ref(localStorage.getItem('theme') || 'light');
+const theme = ref(localStorage.getItem('theme') || 'light')
 
 export function useTheme() {
   const initTheme = () => {
-    if (theme.value === 'dark') {
-      document.documentElement.classList.add('dark-theme');
-      document.body.setAttribute('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark-theme');
-      document.body.setAttribute('theme', 'light');
-    }
-  };
+    document.documentElement.setAttribute('theme', theme.value)
+  }
 
   const changeTheme = () => {
-    theme.value = theme.value === 'light' ? 'dark' : 'light';
-    localStorage.setItem('theme', theme.value);
-    initTheme();
-  };
+    theme.value = theme.value === 'light' ? 'dark' : 'light'
+    localStorage.setItem('theme', theme.value)
+    initTheme()
+  }
 
   onMounted(() => {
-    initTheme();
-  });
+    initTheme()
+  })
 
   return {
     theme: readonly(theme),
     changeTheme,
     initTheme
-  };
+  }
 }
