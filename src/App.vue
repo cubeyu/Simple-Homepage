@@ -39,9 +39,7 @@ body {
   background-color: var(--background-solid);
   background-attachment: fixed;
   color: var(--text-color);
-  transition:
-    background 0.5s ease,
-    color 0.3s ease;
+  transition: color 0.3s ease;
   overflow-x: hidden;
   min-height: 100vh;
 }

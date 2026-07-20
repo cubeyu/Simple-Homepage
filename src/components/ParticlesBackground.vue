@@ -140,7 +140,7 @@ onUnmounted(() => {
 }
 
 /* 暗色模式：压暗并加一层夜色调 */
-:global([theme='dark']) .ink-painting-bg {
+:global([theme='dark'] .ink-painting-bg) {
   opacity: 0.55;
   filter: brightness(0.6) saturate(0.8);
 }
@@ -329,29 +329,29 @@ onUnmounted(() => {
 }
 
 /* 暗色模式适配 */
-:global([theme='dark']) .clouds {
+:global([theme='dark'] .clouds) {
   background: radial-gradient(ellipse at center, #a8a49c 0%, transparent 70%);
   opacity: 0.04;
 }
 
-:global([theme='dark']) .clouds-3 {
+:global([theme='dark'] .clouds-3) {
   opacity: 0.025;
 }
 
-:global([theme='dark']) .bird::before,
-:global([theme='dark']) .bird::after {
+:global([theme='dark'] .bird::before),
+:global([theme='dark'] .bird::after) {
   background: #c0b8a8;
 }
 
-:global([theme='dark']) .birds {
+:global([theme='dark'] .birds) {
   opacity: 0.45;
 }
 
-:global([theme='dark']) .boat {
+:global([theme='dark'] .boat) {
   opacity: 0.5;
 }
 
-:global([theme='dark']) .seal-corner {
+:global([theme='dark'] .seal-corner) {
   opacity: 0.2;
 }
 
@@ -388,7 +388,7 @@ onUnmounted(() => {
   transition: opacity 0.8s ease;
 }
 
-:global([theme='dark']) .night-stars {
+:global([theme='dark'] .night-stars) {
   opacity: 1;
 }
 
@@ -502,7 +502,7 @@ onUnmounted(() => {
 }
 
 /* 暗色模式不显示太阳（保留月亮） */
-:global([theme='dark']) .sun {
+:global([theme='dark'] .sun) {
   display: none;
 }
 

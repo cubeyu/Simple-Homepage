@@ -160,11 +160,11 @@ onUnmounted(() => {
 }
 
 /* 深色主题适配 */
-:global([theme='dark']) .custom-cursor {
+:global([theme='dark'] .custom-cursor) {
   background-color: var(--seal-red);
 }
 
-:global([theme='dark']) .cursor-trail {
+:global([theme='dark'] .cursor-trail) {
   background-color: var(--ink-zhong);
 }
 </style>

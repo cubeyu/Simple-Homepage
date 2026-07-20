@@ -1,7 +1,7 @@
 <div align="center">
 <br/><br/>
 
-> **水 墨 小 筑** · `2026` 年 · 第 `1` 版
+> **水 墨 小 筑** · `2026` 年 · 第 `2` 版
 >
 > ═════════════════════════════════════════
 >
@@ -9,7 +9,7 @@
 >
 > ═════════════════════════════════════════
 >
-> ### —— 一份基于 Vue 3 的古风水墨画风格个人主页，一笔一画，晕染你的数字门牌 ——
+> ### —— 一份基于 Vue 3 的水墨丹青风格个人主页，焦浓重淡清，一笔一境界 ——
 
 </div>
 
@@ -19,24 +19,28 @@
 
 ## 📰 头条 · 项目速览
 
-> **一句话总结**：用 `Vue 3` + `Vite` 打造的轻量个人主页，水墨晕染，古韵悠长，模块化 JSON 配置，改几行字就能变成你自己的。
+> **一句话总结**：用 `Vue 3` + `Vite` 打造的轻量个人主页，纯水墨丹青风格，五色墨韵（焦、浓、重、淡、清），朱砂印章点缀，宣纸为底，山水为屏。全 JSON 模块化配置，改几行字，便是你的一方天地。
 
 | 要素 | 详情 |
 | :---: | :--- |
-| **作者** | cubeyu |
+| **作者** | cubeyu · 麦希屿 |
 | **站点** | [techisle.top](https://techisle.top/) |
 | **协议** | [MIT License](./LICENSE) |
-| **仓库** | [GitHub](https://github.com/cubeyu/Simple-Homepage) |
+| **仓库** | [GitHub](https://github.com/cubeyuu/Simple-Homepage) |
 
 ### ✨ 核心亮点
 
-- 🌓 **日月双主题** — 水墨切换，日为宣纸，夜为墨夜，太阳/月亮/星星/云朵古韵动画
-- ✍️ **毛笔书写效果** — 打字机欢迎语，笔走龙蛇，标点自然停顿
-- 🏔️ **水墨山水背景** — 远山层叠，雾气飘渺，落英缤纷，纯 CSS 水墨晕染
-- 🖌️ **毛笔笔尖光标** — PC 端毛笔跟随，悬停时笔墨晕染，落笔有痕
+- 🌓 **日月双主题** — 日为宣纸（米白），夜为碑拓（墨蓝），朱砂印泥贯穿始终
+- 🎨 **五色墨韵** — 焦、浓、重、淡、清，传统水墨五色系统
+- 🏔️ **山水长卷** — 远山层叠，云雾飘渺，飞鸟翩跹，扁舟一叶，纯 CSS 水墨晕染
+- 🖋️ **朱砂墨点光标** — PC 端朱红点 + 墨色拖尾，落笔有痕
+- 📜 **卷轴形制** — 主卡片如展开的宣纸卷轴，边角水墨装饰（剑、笔、竹、梅）
+- 🪨 **闲章点缀** — 朱砂闲章散落其间，印文"墨"字，古意盎然
+- ✍️ **笔墨打字机** — 语录渐显如毛笔落纸，古诗词与名言交替
 - 🧩 **全 JSON 配置** — 改配置即改内容，零代码上手
 - 📱 **响应式适配** — 桌面端 / 平板 / 手机端三档适配
-- ⏳ **时光进度条** — 今日/本周/本月/本年的进度可视化
+- ⏳ **时光进度条** — 今日/本周/本月/本年的墨色进度可视化
+- 🛠️ **代码规范** — ESLint + Prettier 双剑合璧，代码品质有保障
 
 ---
 
@@ -49,22 +53,32 @@
 | ![Vue](https://img.shields.io/badge/Vue-3.5+-4FC08D?logo=vuedotjs&logoColor=white) | 3.5+ | 渐进式 UI 框架 |
 | ![Vite](https://img.shields.io/badge/Vite-7.1+-646CFF?logo=vite&logoColor=white) | 7.1+ | 构建工具 |
 | ![Iconify](https://img.shields.io/badge/Iconify-5.0+-1769AA?logo=iconify&logoColor=white) | 5.0+ | 统一图标框架 |
-| 纯 CSS 水墨 | 原生 | 山水背景动画 |
+| ![ESLint](https://img.shields.io/badge/ESLint-10.x-4B32C3?logo=eslint&logoColor=white) | 10+ | 代码检查 |
+| ![Prettier](https://img.shields.io/badge/Prettier-3.x-F7B93E?logo=prettier&logoColor=white) | 3.x | 代码格式化 |
+| 纯 CSS 水墨 | 原生 | 山水背景 + 全部装饰元素 |
 
 ### 🏗️ 项目结构
 
 ```
 Simple-Homepage/
 ├── public/                     # 静态公共资源
-│   └── vite.svg
+│   ├── icons/tech/             # 技术栈图标
+│   ├── bg-inkwash.png          # 水墨山水背景图
+│   └── favicon.ico
 ├── src/
 │   ├── assets/                 # 静态资源
 │   │   ├── css/                # 样式文件
-│   │   └── fonts/              # 字体文件
+│   │   │   ├── App.css         # 宣纸纹理、链接高亮等
+│   │   │   └── MainCard.css    # 主卡片核心样式
+│   │   └── fonts/              # 字体文件（钉钉进步体）
 │   ├── components/             # Vue 组件
-│   │   ├── CustomCursor.vue    # 毛笔笔尖光标
-│   │   ├── LinkBtn.vue         # 水墨风格外链按钮
+│   │   ├── CustomCursor.vue    # 朱砂墨点光标
+│   │   ├── Header.vue          # 头部（头像 + 问候 + 标签）
+│   │   ├── LinkBtn.vue         # 水墨风格链接按钮
 │   │   ├── ParticlesBackground.vue  # 水墨山水背景
+│   │   ├── TechStack.vue       # 技术栈展示
+│   │   ├── TimeProgress.vue    # 时光进度条
+│   │   ├── TodoList.vue        # 待办事项列表
 │   │   └── Typewriter.vue      # 打字机效果
 │   ├── composables/            # 组合式函数
 │   │   └── useTheme.js         # 主题管理（localStorage 持久化）
@@ -73,46 +87,101 @@ Simple-Homepage/
 │   │   ├── linkBtn.json        # 链接按钮
 │   │   ├── techStack.json      # 技术栈展示
 │   │   ├── todo.json           # 待办事项
-│   │   └── typewriter.json     # 打字机文本
+│   │   └── typewriter.json     # 打字机文语录
 │   ├── views/
 │   │   └── MainCard.vue        # 主卡片页面
 │   ├── App.vue                 # 根组件
 │   ├── main.js                 # 入口文件
-│   └── style.css               # 全局样式
+│   └── style.css               # 全局样式 + 主题变量
 ├── index.html
 ├── package.json
 ├── vite.config.js
+├── .eslintrc.json
+├── .prettierrc
+├── eslint.config.cjs
+├── 项目改动描述.md              # 改动历史记录
 ├── LICENSE
 └── README.md
 ```
 
 ---
 
-## 🎨 组件特写 · 水墨韵味
+## 🎨 设计语言 · 水墨丹青
 
-### 🌗 日月主题切换器
+### 五色墨韵系统
 
-水墨滑块设计，内置 **红日 / 墨月 / 星点 / 淡云** 四层古韵动画。切换时所有元素联动过渡，主题偏好通过 `localStorage` 持久化，刷新不丢失。
+以传统中国画"墨分五色"为设计基石：
 
-### ✍️ 毛笔打字机组件
+| 墨色 | 色值（亮色） | 用途 |
+| :---: | :---: | :--- |
+| **焦墨** | `#0d0d0d` | 标题、重点文字 |
+| **浓墨** | `#1a1a1a` | 正文文字 |
+| **重墨** | `#2a2a2a` | 次要文字 |
+| **淡墨** | `#4a4a4a` | 辅助文字 |
+| **清墨** | `#6a6a6a` | 占位、提示文字 |
 
-- 多句文本循环轮播
-- 打字速度随机浮动 (±30%)，模拟真人笔意
-- 标点符号自动停顿（2x 慢速）
-- 空格加速过渡（0.8x 速度）
-- 笔尖闪烁 + 完成脉冲动画
+### 朱砂印泥
+
+贯穿双主题的点睛之色：
+
+- 亮色模式：`#9c2c2c`（沉稳朱砂）
+- 暗色模式：`#c94a3f`（温润印泥）
+
+用于：印章、链接、进度点、按钮点缀。
+
+### 双主题意境
+
+| 主题 | 底色 | 意境 |
+| :---: | :--- | :--- |
+| ☀️ **日·宣纸** | `#f7f3eb` 米白宣纸 | 日间展卷，墨香四溢 |
+| 🌙 **夜·碑拓** | `#0a0e14` 墨蓝深靛 | 夜读碑帖，星月相伴 |
+
+---
+
+## 🏔️ 组件特写 · 水墨韵味
+
+### 🌗 日月主题切换
+
+极简"日/月"文字按钮，一键切换宣纸与碑拓。主题偏好通过 `localStorage` 持久化，刷新不丢失。切换时背景、文字、卡片、装饰元素同步过渡，自然如昼夜交替。
+
+### ✍️ 笔墨打字机
+
+- 多句文本循环轮播（古诗词 + 名言）
+- 打字速度自然浮动，模拟真人笔意
+- 墨色渐显效果，如毛笔落纸晕染
+- 笔尖闪烁 + 完成脉冲
 
 ### 🏔️ 水墨山水背景
 
-纯 CSS 实现远山三层叠嶂，雾气飘渺流动，落英缤纷飘落。配合宣纸纹理背景，古韵盎然。
+远山层叠（水墨长卷背景图），云雾飘渺流动，飞鸟一字队形掠过，扁舟一叶随波起伏。左下角一方"墨"字闲章，古意盎然。
 
-### 🖌️ 毛笔笔尖光标
+**暗色模式**：星月当空，星辉闪烁，山水压暗如夜读碑拓。
 
-双层结构：外层（毛笔笔锋）+ 内核（朱红点）。笔锋直接跟随鼠标，内核以缓动插值跟随。悬停交互元素时笔墨晕染扩散；点击时落笔收锋。移动端自动隐藏。
+### 🖋️ 朱砂墨点光标
+
+双层结构：朱红点（笔锋落点）+ 墨色拖尾（笔意残留）。悬停交互元素时晕染扩散；点击时如落印收锋。移动端自动隐藏。
+
+### 📜 卷轴主卡片
+
+主卡片如展开的宣纸卷轴：
+
+- **四角装饰**：剑（左上）、笔（右上）、竹（左下）、梅（右下），水墨写意
+- **边角印章**：朱砂闲章散落，如手卷钤印
+- **竖排题字**：左右两侧竖排古诗词装饰（"山不在高，有仙则名"等）
+- **墨色分割线**：板块间以毛笔笔触分割，非生硬直线
+- **宣纸纹理**：淡噪点模拟宣纸质感
+
+### ⏳ 时光进度条
+
+今日 / 本周 / 本月 / 本年 四重进度，墨色渐变填充，朱砂红点标记当前位置。时间如流水，墨色渐浓。
+
+### 🛠️ 技术栈展示
+
+技术图标默认去饱和处理，悬停时恢复原色，如墨色中渐现真容。
 
 ### 🔘 水墨链接按钮
 
-水墨晕染底纹 + 墨点扩散效果（hover 触发）。图标悬停微缩放 + 墨色变化，文字轻移。按钮悬停上浮 3px，水墨阴影营造层次感。
+细墨边 + 朱砂印泥 hover 效果，点击时如印章盖下（微缩 + 晕染）。
 
 ---
 
@@ -123,7 +192,7 @@ Simple-Homepage/
 > **第一步** — 拉取代码
 
 ```bash
-git clone https://github.com/cubeyu/Simple-Homepage.git
+git clone https://github.com/cubeyuu/Simple-Homepage.git
 cd Simple-Homepage
 ```
 
@@ -148,6 +217,13 @@ npm run build      # 构建生产版本
 npm run preview    # 预览生产构建
 ```
 
+### ✅ 代码检查与格式化
+
+```bash
+npm run lint       # ESLint 代码检查
+npm run format     # Prettier 自动格式化
+```
+
 ---
 
 ## 📋 配置手册 · 定制你的水墨小筑
@@ -158,43 +234,46 @@ npm run preview    # 预览生产构建
 
 ```json
 {
-  "name": "你的名字",
-  "age": "0几年",
-  "zodiac": "♈️",
+  "name": "麦希屿",
+  "age": "18",
+  "zodiac": "白羊",
   "avatarUrl": "头像链接",
-  "emjoi": "😋",
   "infoTags": {
-    "sex": "性别",
-    "company": "公司/组织",
-    "province": "省份",
-    "github": "GitHub 用户名"
+    "sex": "男",
+    "company": "科技岛屿",
+    "province": "中国",
+    "github": "cubeyu"
   },
-  "professions": ["职业标签1", "职业标签2"]
+  "professions": ["我的世界", "AI应用开发"]
 }
 ```
 
 ### 🔗 `linkBtn.json` — 快捷导航
+
+支持最多 3 列 × 4 行（12 个按钮）：
 
 ```json
 {
   "linkBtn": [
     {
       "icon": "mdi:github",
-      "text": "按钮文字",
+      "text": "Github",
       "color": "#2b2b2b",
-      "url": "https://github.com"
+      "url": "https://github.com/cubeyuu"
     }
   ]
 }
 ```
+
+图标来自 [Iconify](https://icon-sets.iconify.design/)，填入图标名即可。
 
 ### 🛠️ `techStack.json` — 技术栈展示
 
 ```json
 {
   "techStack": [
-    { "icon": "material-icon-theme:vue", "name": "Vue" },
-    { "icon": "logos:python", "name": "Python" }
+    { "icon": "vscode-icons:file-type-vue", "name": "Vue" },
+    { "icon": "vscode-icons:file-type-python", "name": "Python" }
   ]
 }
 ```
@@ -210,12 +289,15 @@ npm run preview    # 预览生产构建
 }
 ```
 
-### ⌨️ `typewriter.json` — 打字机文本
+### ⌨️ `typewriter.json` — 打字机语录
+
+古诗词、名言警句，一行为一句：
 
 ```json
 [
-  "你好鸭，欢迎来到我的水墨小筑！",
-  "墨香四溢，笔走龙蛇。"
+  "山不在高，有仙则名",
+  "水不在深，有龙则灵",
+  "长风破浪会有时，直挂云帆济沧海"
 ]
 ```
 
@@ -223,17 +305,27 @@ npm run preview    # 预览生产构建
 
 ## 🔮 版本路线图
 
-- [x] 响应式布局
-- [x] 日月主题切换
-- [x] 打字机效果
-- [x] 水墨山水背景
-- [x] 毛笔笔尖光标
+### ✅ 已完成
+
+- [x] 响应式布局（桌面/平板/手机三档）
+- [x] 日月双主题切换（宣纸 / 碑拓）
+- [x] 五色墨韵设计系统
+- [x] 水墨山水背景（远山、云雾、飞鸟、扁舟）
+- [x] 朱砂墨点光标
+- [x] 卷轴形制主卡片 + 四角装饰
 - [x] 时光进度条
+- [x] 打字机效果（古诗词 + 名言）
 - [x] 模块化 JSON 配置
-- [x] 古风水墨画风格主题
+- [x] ESLint + Prettier 代码规范
+- [x] SEO meta 标签
+- [x] 组件拆分（Header/TodoList/TechStack/TimeProgress）
+
+### 🔮 规划中
+
 - [ ] 多语言支持 (i18n)
-- [ ] SEO 优化增强
 - [ ] PWA 离线支持
+- [ ] 字体子集化（减小体积）
+- [ ] 更多水墨装饰元素可选
 
 ---
 
@@ -251,7 +343,7 @@ npm run preview    # 预览生产构建
 
 > ═════════════════════════════════════════
 >
-> **© 2026 cubeyu** · Published under the **MIT License**
+> **© 2026 cubeyu · 麦希屿** · Published under the **MIT License**
 >
 > 墨香四溢，笔走龙蛇 🖌️
 >

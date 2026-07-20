@@ -44,7 +44,6 @@
   /* 背景 - 夜墨深靛，不是纯黑，有深夜墨蓝感 */
   --background: #0a0e14;
   --background-solid: #0a0e14;
-
   /* 主题色 - 朱砂印泥，温润不刺眼 */
   --theme-color: #c94a3f;
   --theme-gradient: linear-gradient(135deg, #a83830 0%, #c94a3f 50%, #d85a4f 100%);
@@ -75,6 +74,11 @@
   /* 印章红 - 夜色中的朱砂，温润不艳 */
   --seal-red: #c94a3f;
   --seal-red-light: #d85a4f;
+}
+
+/* 暗色模式：隐藏太阳圆，仅保留月亮 */
+[theme='dark'] .ink-background .sun {
+  display: none;
 }
 
 /* 无障碍：尊重用户的动画偏好设置 */
