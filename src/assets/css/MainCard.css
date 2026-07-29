@@ -262,6 +262,7 @@
 .mainCard .content .techStack {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.5rem;
   margin-top: 0.4rem;
 }
