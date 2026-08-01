@@ -63,7 +63,7 @@
 Simple-Homepage/
 ├── public/                     # 静态公共资源
 │   ├── icons/tech/             # 技术栈图标
-│   ├── bg-inkwash.png          # 水墨山水背景图
+│   ├── bg-inkwash.webp         # 水墨山水背景图
 │   └── favicon.ico
 ├── src/
 │   ├── assets/                 # 静态资源

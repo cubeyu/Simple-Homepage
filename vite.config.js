@@ -9,4 +9,14 @@ export default defineConfig({
       usePolling: true,
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vue: ['vue'],
+          iconify: ['@iconify/vue'],
+        },
+      },
+    },
+  },
 })

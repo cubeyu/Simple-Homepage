@@ -456,20 +456,16 @@ import linkBtns from '../config/linkBtn.json'
 import typewriter from '../config/typewriter.json'
 import { Icon } from '@iconify/vue'
 import LinkBtn from '../components/LinkBtn.vue'
-import Typewriter from '../components/Typewriter.vue'
-import Header from '../components/Header.vue'
-import TodoList from '../components/TodoList.vue'
-import TechStack from '../components/TechStack.vue'
-import TimeProgress from '../components/TimeProgress.vue'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { defineAsyncComponent, ref, onMounted, onUnmounted } from 'vue'
+import { useInkTrail } from '../composables/useInkTrail.js'
+
+const Header = defineAsyncComponent(() => import('../components/Header.vue'))
+const TimeProgress = defineAsyncComponent(() => import('../components/TimeProgress.vue'))
+const TechStack = defineAsyncComponent(() => import('../components/TechStack.vue'))
+const Typewriter = defineAsyncComponent(() => import('../components/Typewriter.vue'))
+const TodoList = defineAsyncComponent(() => import('../components/TodoList.vue'))
 
 const inkTrailRef = ref(null)
-let lastInkTime = 0
-const INK_INTERVAL = 80
-const prefersReducedMotion =
-  typeof window !== 'undefined' &&
-  window.matchMedia &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 const createInkDot = (x, y) => {
   if (!inkTrailRef.value) return
@@ -494,30 +490,19 @@ const createInkDot = (x, y) => {
   }, 1500)
 }
 
-const handleMouseMove = (e) => {
-  if (prefersReducedMotion) return
-  const now = Date.now()
-  if (now - lastInkTime < INK_INTERVAL) return
-  lastInkTime = now
-
-  if (!inkTrailRef.value) return
-
-  const rect = inkTrailRef.value.getBoundingClientRect()
-  const x = e.clientX - rect.left
-  const y = e.clientY - rect.top
-
-  createInkDot(x, y)
-}
+let stopInkDot = null
 
 onMounted(() => {
-  if (inkTrailRef.value) {
-    inkTrailRef.value.addEventListener('mousemove', handleMouseMove)
-  }
+  stopInkDot = useInkTrail((x, y) => {
+    if (!inkTrailRef.value) return
+    const rect = inkTrailRef.value.getBoundingClientRect()
+    const relativeX = x - rect.left
+    const relativeY = y - rect.top
+    createInkDot(relativeX, relativeY)
+  }, 80)
 })
 
 onUnmounted(() => {
-  if (inkTrailRef.value) {
-    inkTrailRef.value.removeEventListener('mousemove', handleMouseMove)
-  }
+  if (stopInkDot) stopInkDot()
 })
 </script>

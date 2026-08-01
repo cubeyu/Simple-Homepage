@@ -1,6 +1,8 @@
 @font-face {
   font-family: 'DingTalkJinBuTi';
   font-weight: 400;
-  src: url('DingTalkJinBuTi-Regular.ttf') format('truetype');
+  src:
+    url('DingTalkJinBuTi-Regular.woff2') format('woff2'),
+    url('DingTalkJinBuTi-Regular.ttf') format('truetype');
   font-display: swap;
 }

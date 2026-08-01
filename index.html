@@ -37,6 +37,63 @@
     <meta name="twitter:title" content="cubeyu の水墨小筑" />
     <meta name="twitter:description" content="cubeyu 的水墨风格个人主页" />
 
+    <!-- P2：关键主题 CSS 内联，消除 FOUC 样式闪烁 -->
+    <style>
+      :root {
+        --background: #f7f3eb;
+        --background-solid: #f7f3eb;
+        --theme-color: #9c2c2c;
+        --theme-gradient: linear-gradient(135deg, #7a1f1f 0%, #9c2c2c 50%, #b53a3a 100%);
+        --text-color: #1a1a1a;
+        --text-secondary: #4a4a4a;
+        --card-background: #fdfbf7;
+        --card-border-color: rgba(80, 70, 60, 0.15);
+        --square-background: #faf8f4;
+        --square-border-color: rgba(80, 70, 60, 0.12);
+        --shadow-light: rgba(255, 255, 255, 0.5);
+        --shadow-dark: rgba(40, 30, 20, 0.06);
+        --ink-jiao: #0d0d0d;
+        --ink-nong: #1a1a1a;
+        --ink-zhong: #2a2a2a;
+        --ink-dan: #4a4a4a;
+        --ink-qing: #6a6a6a;
+        --seal-red: #9c2c2c;
+        --seal-red-light: #b53a3a;
+      }
+
+      [theme='dark'] {
+        --background: #0a0e14;
+        --background-solid: #0a0e14;
+        --theme-color: #c94a3f;
+        --theme-gradient: linear-gradient(135deg, #a83830 0%, #c94a3f 50%, #d85a4f 100%);
+        --text-color: #ece8e0;
+        --text-secondary: #b8b4ac;
+        --card-background: #121820;
+        --card-border-color: rgba(150, 140, 120, 0.2);
+        --square-background: #161d27;
+        --square-border-color: rgba(150, 140, 120, 0.18);
+        --shadow-light: rgba(200, 190, 170, 0.03);
+        --shadow-dark: rgba(0, 0, 0, 0.5);
+        --ink-jiao: #f5f1e9;
+        --ink-nong: #e8e4dc;
+        --ink-zhong: #c8c4bc;
+        --ink-dan: #a8a49c;
+        --ink-qing: #888478;
+        --seal-red: #c94a3f;
+        --seal-red-light: #d85a4f;
+      }
+
+      ::selection {
+        background: rgba(156, 44, 44, 0.2);
+        color: var(--ink-nong);
+      }
+
+      [theme='dark'] ::selection {
+        background: rgba(232, 85, 74, 0.3);
+        color: var(--ink-nong);
+      }
+    </style>
+
     <title>cubeyu の水墨小筑</title>
   </head>
 

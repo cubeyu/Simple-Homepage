@@ -64,13 +64,14 @@
 
 <script setup>
 import { inject, ref, onMounted, onUnmounted } from 'vue'
+import { useInkTrail } from '../composables/useInkTrail.js'
 
 const theme = inject('theme')
 const trailLayer = ref(null)
 
-let lastX = 0
-let lastY = 0
-let initialized = false
+let prevX = 0
+let prevY = 0
+let strokeInitialized = false
 
 // 锋利的墨水划过：沿鼠标移动方向生成一段尖头墨笔触
 function createStroke(x0, y0, x1, y1) {
@@ -94,25 +95,24 @@ function createStroke(x0, y0, x1, y1) {
   setTimeout(() => el.remove(), 600)
 }
 
-function onMouseMove(e) {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-  if (!initialized) {
-    lastX = e.clientX
-    lastY = e.clientY
-    initialized = true
-    return
-  }
-  createStroke(lastX, lastY, e.clientX, e.clientY)
-  lastX = e.clientX
-  lastY = e.clientY
-}
+let stopTrail = null
 
 onMounted(() => {
-  window.addEventListener('mousemove', onMouseMove, { passive: true })
+  stopTrail = useInkTrail((x, y) => {
+    if (!strokeInitialized) {
+      prevX = x
+      prevY = y
+      strokeInitialized = true
+      return
+    }
+    createStroke(prevX, prevY, x, y)
+    prevX = x
+    prevY = y
+  }, 0)
 })
 
 onUnmounted(() => {
-  window.removeEventListener('mousemove', onMouseMove)
+  if (stopTrail) stopTrail()
 })
 </script>
 
@@ -132,7 +132,7 @@ onUnmounted(() => {
 .ink-painting-bg {
   position: absolute;
   inset: 0;
-  background-image: url('/bg-inkwash.png');
+  background-image: url('/bg-inkwash.webp');
   background-size: cover;
   background-position: center bottom;
   background-repeat: no-repeat;
