@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/badge/License-MIT-9c2c2c.svg)](./LICENSE)
 ![Status](https://img.shields.io/badge/状态-持续维护中-9c2c2c.svg)
 
-**[🌐 在线预览](https://techisle.top/)** · **[⚙️ 快速部署](#-快速部署三步走)** · **[📋 配置手册](#-配置手册--定制你的水墨小筑)**
+**[🌐 在线预览](https://cubeyu.github.io/Simple-Homepage/)** · **[⚙️ 快速部署](#-快速部署三步走)** · **[📋 配置手册](#-配置手册--定制你的水墨小筑)**
 
 </div>
 
