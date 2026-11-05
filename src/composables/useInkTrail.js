@@ -27,7 +27,7 @@ export function useInkTrail(callback, throttleMs = 80) {
   const entry = {
     callback,
     throttleMs,
-    lastRun: 0,
+    lastRun: 0
   }
 
   listeners.add(entry)

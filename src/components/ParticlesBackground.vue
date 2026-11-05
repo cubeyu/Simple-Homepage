@@ -482,8 +482,8 @@ onUnmounted(() => {
   border-radius: 50%;
   background: radial-gradient(
     circle at 50% 50%,
-    rgba(120, 124, 130, 0.20) 0%,
-    rgba(120, 124, 130, 0.10) 58%,
+    rgba(120, 124, 130, 0.2) 0%,
+    rgba(120, 124, 130, 0.1) 58%,
     transparent 72%
   );
   border: 1.5px solid rgba(86, 90, 96, 0.38);

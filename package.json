@@ -23,5 +23,8 @@
     "eslint-plugin-vue": "^10.9.2",
     "prettier": "^3.9.5",
     "vite": "^7.1.2"
+  },
+  "overrides": {
+    "minimatch": "^11.0.4"
   }
 }

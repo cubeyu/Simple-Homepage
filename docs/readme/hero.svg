@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="1200" height="300" role="img" aria-label="水墨小筑 · Simple Homepage — 基于 Vue 3 的水墨丹青个人主页">
+  <title>水墨小筑 · Simple Homepage — 基于 Vue 3 的水墨丹青个人主页</title>
+  <!-- 宣纸底色 -->
+  <rect width="1200" height="300" fill="#f7f3eb"/>
+  <rect width="1200" height="300" fill="url(#paperGrain)"/>
+
+  <defs>
+    <!-- 宣纸淡纹理 -->
+    <pattern id="paperGrain" width="6" height="6" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="2" r="0.5" fill="#1a1a1a" opacity="0.015"/>
+      <circle cx="4" cy="5" r="0.5" fill="#1a1a1a" opacity="0.02"/>
+    </pattern>
+    <!-- 远山雾气渐隐 -->
+    <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a1a1a" stop-opacity="0"/>
+      <stop offset="1" stop-color="#f7f3eb" stop-opacity="1"/>
+    </linearGradient>
+    <linearGradient id="sealInk" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a83830"/>
+      <stop offset="0.5" stop-color="#9c2c2c"/>
+      <stop offset="1" stop-color="#b53a3a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 远山层叠(水墨剪影) -->
+  <path d="M0 268 Q 90 196 170 232 Q 235 262 320 238 Q 400 214 470 246 Q 540 272 620 250 L 620 300 L 0 300 Z" fill="#1a1a1a" opacity="0.08"/>
+  <path d="M620 262 Q 720 200 820 236 Q 900 264 990 240 Q 1080 214 1200 248 L 1200 300 L 620 300 Z" fill="#1a1a1a" opacity="0.06"/>
+  <path d="M300 282 Q 480 236 640 262 Q 820 288 1000 268 Q 1110 256 1200 274 L 1200 300 L 300 300 Z" fill="#1a1a1a" opacity="0.1"/>
+  <rect y="240" width="1200" height="60" fill="url(#mist)"/>
+
+  <!-- 飞鸟一笔点景 -->
+  <path d="M1035 84 q 7 -7 14 0 M1049 84 q 7 -7 14 0" stroke="#1a1a1a" stroke-width="2" fill="none" opacity="0.35" stroke-linecap="round"/>
+  <path d="M1078 68 q 5.5 -5 11 0 M1089 68 q 5.5 -5 11 0" stroke="#1a1a1a" stroke-width="1.6" fill="none" opacity="0.25" stroke-linecap="round"/>
+
+  <!-- 左侧主标题 -->
+  <text x="84" y="150" font-family="KaiTi, STKaiti, 'AR PL UKai CN', 'Noto Serif SC', serif" font-size="92" font-weight="700" fill="#1a1a1a" letter-spacing="10">水墨小筑</text>
+
+  <!-- 标题旁朱砂闲章「墨」 -->
+  <g transform="translate(592,72) rotate(-4)">
+    <rect width="74" height="74" rx="9" fill="url(#sealInk)"/>
+    <rect x="5" y="5" width="64" height="64" rx="6" fill="none" stroke="#f7f3eb" stroke-width="2" opacity="0.55"/>
+    <text x="37" y="53" text-anchor="middle" font-family="KaiTi, STKaiti, 'AR PL UKai CN', 'Noto Serif SC', serif" font-size="42" font-weight="700" fill="#f7f3eb">墨</text>
+  </g>
+
+  <!-- 英文副题 -->
+  <text x="86" y="196" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="24" font-weight="600" fill="#9c2c2c" letter-spacing="14">SIMPLE · HOMEPAGE</text>
+
+  <!-- 毛笔笔触分隔 -->
+  <path d="M86 224 Q 240 218 420 222 Q 560 226 660 221" stroke="#1a1a1a" stroke-width="3.5" fill="none" opacity="0.75" stroke-linecap="round"/>
+  <circle cx="672" cy="221" r="3" fill="#9c2c2c"/>
+  <circle cx="686" cy="221" r="2" fill="#1a1a1a" opacity="0.6"/>
+
+  <!-- 价值主张 -->
+  <text x="86" y="258" font-family="'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif" font-size="21" fill="#4a4a4a">基于 Vue 3 的水墨丹青个人主页 —— 五色墨韵 · 朱砂为印 · 全 JSON 配置,改几行字便是你的一方天地</text>
+
+  <!-- 右侧竖排题字 -->
+  <text x="1136" y="84" font-family="KaiTi, STKaiti, 'AR PL UKai CN', 'Noto Serif SC', serif" font-size="21" fill="#4a4a4a" opacity="0.85">山<tspan x="1136" dy="27">不</tspan><tspan x="1136" dy="27">在</tspan><tspan x="1136" dy="27">高</tspan></text>
+  <text x="1166" y="84" font-family="KaiTi, STKaiti, 'AR PL UKai CN', 'Noto Serif SC', serif" font-size="21" fill="#4a4a4a" opacity="0.6">有<tspan x="1166" dy="27">仙</tspan><tspan x="1166" dy="27">则</tspan><tspan x="1166" dy="27">名</tspan></text>
+</svg>

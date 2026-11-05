@@ -25,3 +25,6 @@ dist-ssr
 
 # Trae IDE
 .trae/
+
+# ZCode 本地工具
+.mimosa/

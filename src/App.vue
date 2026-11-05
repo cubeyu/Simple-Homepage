@@ -14,7 +14,9 @@ import MainCard from './views/MainCard.vue'
 import { defineAsyncComponent, provide } from 'vue'
 import { useTheme } from './composables/useTheme'
 
-const ParticlesBackground = defineAsyncComponent(() => import('./components/ParticlesBackground.vue'))
+const ParticlesBackground = defineAsyncComponent(
+  () => import('./components/ParticlesBackground.vue')
+)
 const CustomCursor = defineAsyncComponent(() => import('./components/CustomCursor.vue'))
 
 const { theme, changeTheme, initTheme } = useTheme()
